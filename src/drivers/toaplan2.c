@@ -787,7 +787,7 @@ static READ16_HANDLER( ghox_p1_h_analog_r )
 	return value;
 }
 
-static READ16_HANDLER( ghox_p1_v_analog_r )
+static READ_HANDLER( ghox_p1_v_analog_r )
 {
 	INT8 new_value;
 
@@ -813,7 +813,7 @@ static READ16_HANDLER( ghox_p2_h_analog_r )
 	return value;
 }
 
-static READ16_HANDLER( ghox_p2_v_analog_r )
+static READ_HANDLER( ghox_p2_v_analog_r )
 {
 	INT8 new_value;
 
@@ -828,141 +828,6 @@ static READ16_HANDLER( ghox_p2_v_analog_r )
 	return (input_port_2_r(0) | 1);
 }
 
-static READ16_HANDLER( ghox_mcu_r )
-{
-	return 0xff;
-}
-
-static WRITE16_HANDLER( ghox_mcu_w )
-{
-	if (data == 0xfe)
-		sample_stop (0);
-
-	if (data == 0x42 || data == 0x44 || data == 0x45 || data == 0x47 || data == 0x48 || data == 0x4c || data == 0x4d || data == 0x4e)
-		sample_start (0, data , 1);
-
-	if (data == 0xd0)
-		sample_start (0, 0, 1);
-
-	if (data == 0x49)
-		sample_start (0, data , 0);
-
-	if (data >= 0x02 && data <= 0x0f)
-		sample_start (1, data , 0);
-
-	if (data >= 0x10 && data <= 0x17)
-		sample_start (2, data , 0);
-
-	if (data >= 0x18 && data <= 0x1f)
-		sample_start (3, data , 0);
-
-	if (data >= 0x20 && data <= 0x27)
-		sample_start (4, data , 0);
-
-	if (data >= 0x28 && data <= 0x2f)
-		sample_start (5, data , 0);
-
-	if (data >= 0x30 && data <= 0x38)
-		sample_start (6, data , 0);
-
-	if (data == 0x39)
-		sample_start (8, data , 0);
-
-	if (data >= 0x3a && data <= 0x3f)
-		sample_start (7, data , 0);
-
-	if (data == 0x01)
-		sample_start (8, data , 0);
-
-	if (data == 0x4b)
-		sample_start (0, 0x4f , 0);
-
-	if (ACCESSING_LSB)
-	{
-		mcu_data = data;
-		if ((data >= 0xd0) && (data < 0xe0))
-		{
-			offset = ((data & 0x0f) * 2) + (0x38 / 2);
-			toaplan2_shared_ram16[offset  ] = 0x0005;	/* Return address for */
-			toaplan2_shared_ram16[offset-1] = 0x0056;	/*   RTS instruction */
-		}
-		else
-		{
-			log_cb(RETRO_LOG_DEBUG, LOGPRE "PC:%08x Writing %08x to HD647180 cpu shared ram status port\n",activecpu_get_previouspc(),mcu_data);
-		}
-		toaplan2_shared_ram16[0x56 / 2] = 0x004e;	/* Return a RTS instruction */
-		toaplan2_shared_ram16[0x58 / 2] = 0x0075;
-
-		if (data == 0xd3)
-		{
-		toaplan2_shared_ram16[0x56 / 2] = 0x003a;	/*	move.w  d1,d5*/
-		toaplan2_shared_ram16[0x58 / 2] = 0x0001;
-		toaplan2_shared_ram16[0x5a / 2] = 0x0008;	/*	bclr.b  #0,d5*/
-		toaplan2_shared_ram16[0x5c / 2] = 0x0085;
-		toaplan2_shared_ram16[0x5e / 2] = 0x0000;
-		toaplan2_shared_ram16[0x60 / 2] = 0x0000;
-		toaplan2_shared_ram16[0x62 / 2] = 0x00cb;	/*	muls.w  #3,d5*/
-		toaplan2_shared_ram16[0x64 / 2] = 0x00fc;
-		toaplan2_shared_ram16[0x66 / 2] = 0x0000;
-		toaplan2_shared_ram16[0x68 / 2] = 0x0003;
-		toaplan2_shared_ram16[0x6a / 2] = 0x0090;	/*	sub.w   d5,d0*/
-		toaplan2_shared_ram16[0x6c / 2] = 0x0045;
-		toaplan2_shared_ram16[0x6e / 2] = 0x00e5;	/*	lsl.b   #2,d1*/
-		toaplan2_shared_ram16[0x70 / 2] = 0x0009;
-		toaplan2_shared_ram16[0x72 / 2] = 0x004e;	/*	rts*/
-		toaplan2_shared_ram16[0x74 / 2] = 0x0075;
-		}
-	}
-}
-
-static const char *ghox_sample_names[] =
-{
-	"*ghox",
-	"d0.wav","01.wav","02.wav","dm.wav","04.wav","05.wav","06.wav","dm.wav",
-	"08.wav","09.wav","dm.wav","0b.wav","0c.wav","dm.wav","dm.wav","0f.wav",
-	"dm.wav","11.wav","12.wav","12.wav","14.wav","15.wav","16.wav","17.wav",
-	"18.wav","19.wav","1a.wav","1b.wav","1c.wav","1c.wav","1c.wav","1f.wav",
-	"20.wav","21.wav","22.wav","23.wav","24.wav","dm.wav","dm.wav","27.wav",
-	"dm.wav","dm.wav","2a.wav","2b.wav","dm.wav","2d.wav","2e.wav","2f.wav",
-	"dm.wav","dm.wav","dm.wav","33.wav","34.wav","35.wav","36.wav","37.wav",
-	"38.wav","39.wav","dm.wav","dm.wav","3c.wav","dm.wav","3e.wav","dm.wav",
-	"dm.wav","dm.wav","42.wav","43.wav","44.wav","45.wav","43.wav","47.wav",
-	"48.wav","49.wav","43.wav","dm.wav","4c.wav","4d.wav","4e.wav","d1.wav",0
-};
-
-struct Samplesinterface ghox_samples_interface =
-{
-	9,
-    75,
-    ghox_sample_names
-};
-
-static READ16_HANDLER( ghox_shared_ram_r )
-{
-	/* Ghox 68K reads data from MCU shared RAM and writes it to main RAM.
-	   It then subroutine jumps to main RAM and executes this code.
-	   Here, we're just returning a RTS instruction for now.
-	   See above ghox_mcu_w routine.
-
-	   Offset $56 and $58 are accessed from around PC:0F814
-
-	   Offset $38 and $36 are accessed from around PC:0DA7C
-	   Offset $3c and $3a are accessed from around PC:02E3C
-	   Offset $40 and $3E are accessed from around PC:103EE
-	   Offset $44 and $42 are accessed from around PC:0FB52
-	   Offset $48 and $46 are accessed from around PC:06776
-	*/
-
-	return toaplan2_shared_ram16[offset] & 0xff;
-}
-
-static WRITE16_HANDLER( ghox_shared_ram_w )
-{
-	if (ACCESSING_LSB)
-	{
-		toaplan2_shared_ram16[offset] = data & 0xff;
-	}
-}
 
 /****************************************************************************
   The Toaplan 2 hardware with V25+ secondary CPU controls the sound through
@@ -1601,15 +1466,7 @@ static MEMORY_READ16_START( ghox_readmem )
 	{ 0x100000, 0x100001, ghox_p1_h_analog_r },		/* Paddle 1 */
 	{ 0x140004, 0x140007, toaplan2_0_videoram16_r },
 	{ 0x14000c, 0x14000d, toaplan2_inputport_0_word_r },	/* VBlank */
-	{ 0x180000, 0x180001, ghox_mcu_r },				/* really part of shared RAM */
-	{ 0x180006, 0x180007, input_port_4_word_r },	/* Dip Switch A */
-	{ 0x180008, 0x180009, input_port_5_word_r },	/* Dip Switch B */
-	{ 0x180010, 0x180011, input_port_3_word_r },	/* Coin/System inputs */
-/*	{ 0x18000c, 0x18000d, input_port_1_word_r },	 // Player 1 controls (real) /*/
-/*	{ 0x18000e, 0x18000f, input_port_2_word_r },	 // Player 2 controls (real) /*/
-	{ 0x18000c, 0x18000d, ghox_p1_v_analog_r },		/* Player 1 controls */
-	{ 0x18000e, 0x18000f, ghox_p2_v_analog_r },		/* Player 2 controls */
-	{ 0x180500, 0x180fff, ghox_shared_ram_r },
+	{ 0x180000, 0x180fff, toaplan2_shared_r },
 	{ 0x18100c, 0x18100d, input_port_6_word_r },	/* Territory Jumper block */
 MEMORY_END
 
@@ -1621,8 +1478,7 @@ static MEMORY_WRITE16_START( ghox_writemem )
 	{ 0x140004, 0x140007, toaplan2_0_videoram16_w },/* Tile/Sprite VideoRAM */
 	{ 0x140008, 0x140009, toaplan2_0_scroll_reg_select_w },
 	{ 0x14000c, 0x14000d, toaplan2_0_scroll_reg_data_w },
-	{ 0x180000, 0x180001, ghox_mcu_w },				/* really part of shared RAM */
-	{ 0x180500, 0x180fff, ghox_shared_ram_w, &toaplan2_shared_ram16 },
+	{ 0x180000, 0x180fff, toaplan2_shared_w },
 	{ 0x181000, 0x181001, toaplan2_coin_word_w },
 MEMORY_END
 
@@ -2374,6 +2230,29 @@ static PORT_WRITE_START( bbakraid_sound_writeport )
 	{ 0x81, 0x81, YMZ280B_data_0_w },
 PORT_END
 
+static MEMORY_READ_START( ghox_hd647180_readmem )
+    { 0x00000, 0x03fff, MRA_ROM },  /* Internal 16k byte ROM */
+	{ 0x0fe00, 0x0ffff, MRA_RAM },  /* Internal 512 byte RAM */
+	{ 0x3fe00, 0x3ffff, MRA_RAM },   /* RAM (is this actually just internal RAM getting mapped badly?) */
+	{ 0x40000, 0x4f7ff, MRA_RAM },
+	{ 0x80002, 0x80002, input_port_4_r },
+	{ 0x80004, 0x80004, input_port_5_r },
+	{ 0x80006, 0x80006, MRA_NOP }, // nothing?
+	{ 0x80008, 0x80008, ghox_p1_v_analog_r },
+	{ 0x8000a, 0x8000a, ghox_p2_v_analog_r },
+	{ 0x8000c, 0x8000e, input_port_3_r },
+	{ 0x8000e, 0x8000f, YM2151_status_port_0_r },
+MEMORY_END
+
+
+static MEMORY_WRITE_START( ghox_hd647180_writemem )
+    { 0x00000, 0x03fff, MWA_ROM },   /* Internal 16k byte ROM */
+	{ 0x0fe00, 0x0ffff, MWA_RAM },  /* Internal 512 byte RAM */
+	{ 0x3fe00, 0x3ffff, MWA_RAM },  /* RAM (is this actually just internal RAM getting mapped badly?) */
+	{ 0x40000, 0x4f7ff, MWA_RAM, &toaplan2_shared_ram },
+	{ 0x8000e, 0x8000f, YM2151_word_0_w },
+MEMORY_END
+
 
 #if HD64x180
 static MEMORY_READ_START( hd647180_readmem )
@@ -2630,7 +2509,7 @@ INPUT_PORTS_START( ghox )
 	PORT_DIPSETTING(	0x08, "100k only" )
 	PORT_DIPSETTING(	0x0c, "None" )
 	LIVES_8
-	PORT_BITX(	  0x40,	0x00, IPT_DIPSWITCH_NAME | IPF_CHEAT, "Invulnerability", IP_KEY_NONE, IP_JOY_NONE )
+	PORT_DIPNAME( 0x40,	0x00, "Invulnerability" )
 	PORT_DIPSETTING(	0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(	0x40, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80,	0x00, DEF_STR( Unused ) )
@@ -2703,7 +2582,7 @@ INPUT_PORTS_START( dogyuun )
 	PORT_DIPSETTING(		0x0008, "400k only" )
 	PORT_DIPSETTING(		0x000c, "None" )
 	LIVES_16
-	PORT_BITX(	  0x0040,	0x0000, IPT_DIPSWITCH_NAME | IPF_CHEAT, "Invulnerability", IP_KEY_NONE, IP_JOY_NONE )
+	PORT_DIPNAME( 0x0040,	0x0000, "Invulnerability" )
 	PORT_DIPSETTING(		0x0000, DEF_STR( Off ) )
 	PORT_DIPSETTING(		0x0040, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0080,	0x0000, "Allow Continue" )
@@ -2772,7 +2651,7 @@ INPUT_PORTS_START( kbash )
 	PORT_DIPSETTING(		0x0000, "2" )
 	PORT_DIPSETTING(		0x0020, "3" )
 	PORT_DIPSETTING(		0x0010, "4" )
-	PORT_BITX(	  0x0040,	0x0000, IPT_DIPSWITCH_NAME | IPF_CHEAT, "Invulnerability", IP_KEY_NONE, IP_JOY_NONE )
+	PORT_DIPNAME( 0x0040,	0x0000, "Invulnerability" )
 	PORT_DIPSETTING(		0x0000, DEF_STR( Off ) )
 	PORT_DIPSETTING(		0x0040, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0080,	0x0000, "Allow Continue" )
@@ -2833,7 +2712,7 @@ INPUT_PORTS_START( kbash2 )
 	PORT_DIPSETTING(		0x0000, "2" )
 	PORT_DIPSETTING(		0x0020, "3" )
 	PORT_DIPSETTING(		0x0010, "4" )
-	PORT_DIPNAME( 0x0040, 0x0000, "Invulnerability" )
+	PORT_DIPNAME( 0x0040,   0x0000, "Invulnerability" )
 	PORT_DIPSETTING(		0x0000, DEF_STR( Off ) )
 	PORT_DIPSETTING(		0x0040, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0080,	0x0000, "Allow Continue" )
@@ -2892,7 +2771,7 @@ INPUT_PORTS_START( truxton2 )
 	PORT_DIPSETTING(		0x0000, "3" )
 	PORT_DIPSETTING(		0x0020, "4" )
 	PORT_DIPSETTING(		0x0010, "5" )
-	PORT_BITX(	  0x0040,	0x0000, IPT_DIPSWITCH_NAME | IPF_CHEAT, "Invulnerability", IP_KEY_NONE, IP_JOY_NONE )
+	PORT_DIPNAME( 0x0040,	0x0000, "Invulnerability" )
 	PORT_DIPSETTING(		0x0000, DEF_STR( Off ) )
 	PORT_DIPSETTING(		0x0040, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0080,	0x0000, "Allow Continue" )
@@ -2933,7 +2812,7 @@ INPUT_PORTS_START( pipibibs )
 	PORT_DIPSETTING(	0x08, "200k only" )
 	PORT_DIPSETTING(	0x0c, "None" )
 	LIVES_8
-	PORT_BITX(	  0x40,	0x00, IPT_DIPSWITCH_NAME | IPF_CHEAT, "Invulnerability", IP_KEY_NONE, IP_JOY_NONE )
+	PORT_DIPNAME( 0x40,	0x00, "Invulnerability" )
 	PORT_DIPSETTING(	0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(	0x40, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80,	0x00, DEF_STR( Unused ) )
@@ -2979,7 +2858,7 @@ INPUT_PORTS_START( whoopee )
 	PORT_DIPSETTING(	0x08, "200k only" )
 	PORT_DIPSETTING(	0x0c, "None" )
 	LIVES_8
-	PORT_BITX(	  0x40,	0x00, IPT_DIPSWITCH_NAME | IPF_CHEAT, "Invulnerability", IP_KEY_NONE, IP_JOY_NONE )
+	PORT_DIPNAME( 0x40,	0x00, "Invulnerability" )
 	PORT_DIPSETTING(	0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(	0x40, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80,	0x00, DEF_STR( Unused ) )
@@ -3036,7 +2915,7 @@ INPUT_PORTS_START( pipibibi )
 	PORT_DIPSETTING(	0x08, "200k only" )
 	PORT_DIPSETTING(	0x0c, "None" )
 	LIVES_8
-	PORT_BITX(	  0x40,	0x00, IPT_DIPSWITCH_NAME | IPF_CHEAT, "Invulnerability", IP_KEY_NONE, IP_JOY_NONE )
+	PORT_DIPNAME( 0x40,	0x00, "Invulnerability" )
 	PORT_DIPSETTING(	0x00, DEF_STR( Off ) )
 	PORT_DIPSETTING(	0x40, DEF_STR( On ) )
 	PORT_DIPNAME( 0x80,	0x00, DEF_STR( Unused ) )
@@ -3115,7 +2994,7 @@ INPUT_PORTS_START( fixeight )
 	PORT_DIPSETTING(		0x0000, "500k and every 500k" )
 	PORT_DIPSETTING(		0x000c, "None" )
 	LIVES_16
-	PORT_BITX(	  0x0040,	0x0000, IPT_DIPSWITCH_NAME | IPF_CHEAT, "Invulnerability", IP_KEY_NONE, IP_JOY_NONE )
+	PORT_DIPNAME( 0x0040,	0x0000, "Invulnerability" )
 	PORT_DIPSETTING(		0x0000, DEF_STR( Off ) )
 	PORT_DIPSETTING(		0x0040, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0080,	0x0000, "Allow Continue" )
@@ -3142,8 +3021,7 @@ INPUT_PORTS_START( fixeight )
 INPUT_PORTS_END
 
 INPUT_PORTS_START( fixeighb )
-
-PORT_START		/* (0) VBlank */
+    PORT_START		/* (0) VBlank */
 	PORT_BIT( 0x0001, IP_ACTIVE_HIGH, IPT_VBLANK )
 	PORT_BIT( 0xfffe, IP_ACTIVE_HIGH, IPT_UNKNOWN )
 
@@ -3230,7 +3108,7 @@ INPUT_PORTS_START( grindstm )
 	PORT_DIPSETTING(		0x0000, "300k and 800k" )
 	PORT_DIPSETTING(		0x000c, "None" )
 	LIVES_16
-	PORT_BITX(	  0x0040,	0x0000, IPT_DIPSWITCH_NAME | IPF_CHEAT, "Invulnerability", IP_KEY_NONE, IP_JOY_NONE )
+	PORT_DIPNAME( 0x0040,	0x0000, "Invulnerability" )
 	PORT_DIPSETTING(		0x0000, DEF_STR( Off ) )
 	PORT_DIPSETTING(		0x0040, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0080,	0x0000, "Allow Continue" )
@@ -3293,7 +3171,7 @@ INPUT_PORTS_START( vfive )
 	PORT_DIPSETTING(		0x0000, "300k and 800k" )
 	PORT_DIPSETTING(		0x000c, "None" )
 	LIVES_16
-	PORT_BITX(	  0x0040,	0x0000, IPT_DIPSWITCH_NAME | IPF_CHEAT, "Invulnerability", IP_KEY_NONE, IP_JOY_NONE )
+	PORT_DIPNAME( 0x0040,	0x0000, "Invulnerability" )
 	PORT_DIPSETTING(		0x0000, DEF_STR( Off ) )
 	PORT_DIPSETTING(		0x0040, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0080,	0x0000, "Allow Continue" )
@@ -3339,7 +3217,7 @@ INPUT_PORTS_START( batsugun )
 	PORT_DIPSETTING(		0x0008, "1500k only" )
 	PORT_DIPSETTING(		0x000c, "None" )
 	LIVES_16
-	PORT_BITX(	  0x0040,	0x0000, IPT_DIPSWITCH_NAME | IPF_CHEAT, "Invulnerability", IP_KEY_NONE, IP_JOY_NONE )
+	PORT_DIPNAME( 0x0040,	0x0000, "Invulnerability" )
 	PORT_DIPSETTING(		0x0000, DEF_STR( Off ) )
 	PORT_DIPSETTING(		0x0040, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0080,	0x0000, "Allow Continue" )
@@ -3412,7 +3290,7 @@ INPUT_PORTS_START( snowbro2 )
 	PORT_DIPSETTING(		0x0020, "2" )
 	PORT_DIPSETTING(		0x0000, "3" )
 	PORT_DIPSETTING(		0x0010, "4" )
-	PORT_BITX(	  0x0040,	0x0000, IPT_DIPSWITCH_NAME | IPF_CHEAT, "Invulnerability", IP_KEY_NONE, IP_JOY_NONE )
+	PORT_DIPNAME( 0x0040,	0x0000, "Invulnerability" )
 	PORT_DIPSETTING(		0x0000, DEF_STR( Off ) )
 	PORT_DIPSETTING(		0x0040, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0080,	0x0000, "Maximum Players" )
@@ -3469,7 +3347,7 @@ INPUT_PORTS_START( sstriker )
 	PORT_DIPSETTING(		0x0008, "200k only" )
 	PORT_DIPSETTING(		0x000c, "None" )
 	LIVES_16
-	PORT_BITX(	  0x0040,	0x0000, IPT_DIPSWITCH_NAME | IPF_CHEAT, "Invulnerability", IP_KEY_NONE, IP_JOY_NONE )
+	PORT_DIPNAME( 0x0040,	0x0000, "Invulnerability" )
 	PORT_DIPSETTING(		0x0000, DEF_STR( Off ) )
 	PORT_DIPSETTING(		0x0040, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0080,	0x0000, "Allow Continue" )
@@ -3524,7 +3402,7 @@ INPUT_PORTS_START( mahoudai )
 	PORT_DIPSETTING(		0x0008, "200k only" )
 	PORT_DIPSETTING(		0x000c, "None" )
 	LIVES_16
-	PORT_BITX(	  0x0040,	0x0000, IPT_DIPSWITCH_NAME | IPF_CHEAT, "Invulnerability", IP_KEY_NONE, IP_JOY_NONE )
+	PORT_DIPNAME( 0x0040,	0x0000, "Invulnerability" )
 	PORT_DIPSETTING(		0x0000, DEF_STR( Off ) )
 	PORT_DIPSETTING(		0x0040, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0080,	0x0000, "Allow Continue" )
@@ -3573,7 +3451,7 @@ INPUT_PORTS_START( kingdmgp )
 	PORT_DIPSETTING(		0x0008, "200k only" )
 	PORT_DIPSETTING(		0x000c, "None" )
 	LIVES_16
-	PORT_BITX(	  0x0040,	0x0000, IPT_DIPSWITCH_NAME | IPF_CHEAT, "Invulnerability", IP_KEY_NONE, IP_JOY_NONE )
+	PORT_DIPNAME( 0x0040,	0x0000, "Invulnerability" )
 	PORT_DIPSETTING(		0x0000, DEF_STR( Off ) )
 	PORT_DIPSETTING(		0x0040, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0080,	0x0000, "Allow Continue" )
@@ -3631,7 +3509,7 @@ INPUT_PORTS_START( shippumd )
 	PORT_DIPSETTING(		0x0008, "200k only" )
 	PORT_DIPSETTING(		0x000c, "None" )
 	LIVES_16
-	PORT_BITX(	  0x0040,	0x0000, IPT_DIPSWITCH_NAME | IPF_CHEAT, "Invulnerability", IP_KEY_NONE, IP_JOY_NONE )
+	PORT_DIPNAME( 0x0040,	0x0000, "Invulnerability" )
 	PORT_DIPSETTING(		0x0000, DEF_STR( Off ) )
 	PORT_DIPSETTING(		0x0040, DEF_STR( On ) )
 	PORT_DIPNAME( 0x0080,	0x0000, "Allow Continue" )
@@ -3706,7 +3584,7 @@ INPUT_PORTS_START( battleg )
 	PORT_DIPSETTING(		0x0010, "4" )
 	PORT_DIPSETTING(		0x0040, "5" )
 	PORT_DIPSETTING(		0x0050, "6" )
-	PORT_BITX( 0,			0x0060, IPT_DIPSWITCH_SETTING | IPF_CHEAT, "Infinite", 0, 0 )
+	PORT_DIPSETTING(		0x0060, "Infinite" )
 /*	PORT_BITX( 0,			0x0070, IPT_DIPSWITCH_SETTING | IPF_CHEAT, "Invulnerability", 0, 0 )*/
 	PORT_DIPNAME( 0x0080,	0x0000, DEF_STR( Bonus_Life ) )
 	/* Bonus_Life for Non European territories */
@@ -3795,7 +3673,7 @@ INPUT_PORTS_START( battlega )
 	PORT_DIPSETTING(		0x0010, "4" )
 	PORT_DIPSETTING(		0x0040, "5" )
 	PORT_DIPSETTING(		0x0050, "6" )
-	PORT_BITX( 0,			0x0060, IPT_DIPSWITCH_SETTING | IPF_CHEAT, "Infinite", 0, 0 )
+	PORT_DIPSETTING(		0x0060, "Infinite" )
 /*	PORT_BITX( 0,			0x0070, IPT_DIPSWITCH_SETTING | IPF_CHEAT, "Invulnerability", 0, 0 )*/
 	PORT_DIPNAME( 0x0080,	0x0000, DEF_STR( Bonus_Life ) )
 	/* Bonus_Life for Non European territories */
@@ -3883,7 +3761,7 @@ INPUT_PORTS_START( battlegb )
 	PORT_DIPSETTING(		0x0010, "4" )
 	PORT_DIPSETTING(		0x0040, "5" )
 	PORT_DIPSETTING(		0x0050, "6" )
-	PORT_BITX( 0,			0x0060, IPT_DIPSWITCH_SETTING | IPF_CHEAT, "Infinite", 0, 0 )
+	PORT_DIPSETTING(		0x0060, "Infinite" )
 /*	PORT_BITX( 0,			0x0070, IPT_DIPSWITCH_SETTING | IPF_CHEAT, "Invulnerability", 0, 0 )*/
 	PORT_DIPNAME( 0x0080,	0x0000, DEF_STR( Bonus_Life ) )
 	/* Bonus_Life for Non European territories */
@@ -3952,7 +3830,7 @@ INPUT_PORTS_START( batrider )
 	PORT_DIPNAME( 0x0800,	0x0000, "Allow Continue" )
 	PORT_DIPSETTING(		0x0800, DEF_STR( No ) )
 	PORT_DIPSETTING(		0x0000, DEF_STR( Yes ) )
-	PORT_BITX(	  0x1000,	0x0000, IPT_DIPSWITCH_NAME | IPF_CHEAT, "Invulnerability", IP_KEY_NONE, IP_JOY_NONE )
+	PORT_DIPNAME( 0x1000,	0x0000, "Invulnerability" )
 	PORT_DIPSETTING(		0x0000, DEF_STR( Off ) )
 	PORT_DIPSETTING(		0x1000, DEF_STR( On ) )
 	/*  These Dips are showed only when Coin_A is set to Free_Play.
@@ -4077,7 +3955,7 @@ INPUT_PORTS_START( bbakraid )
 	PORT_DIPNAME( 0x0800,	0x0000, "Allow Continue" )
 	PORT_DIPSETTING(		0x0800, DEF_STR( No ) )
 	PORT_DIPSETTING(		0x0000, DEF_STR( Yes ) )
-	PORT_BITX(	  0x1000,	0x0000, IPT_DIPSWITCH_NAME | IPF_CHEAT, "Invulnerability", IP_KEY_NONE, IP_JOY_NONE )
+	PORT_DIPNAME( 0x1000,	0x0000, "Invulnerability" )
 	PORT_DIPSETTING(		0x0000, DEF_STR( Off ) )
 	PORT_DIPSETTING(		0x1000, DEF_STR( On ) )
 	PORT_DIPNAME( 0x2000,	0x0000, "Save Scores" )
@@ -4443,13 +4321,14 @@ static MACHINE_DRIVER_START( ghox )
 	MDRV_CPU_MEMORY(ghox_readmem,ghox_writemem)
 	MDRV_CPU_VBLANK_INT(toaplan2_vblank_irq4,262)
 
-#if HD64x180
+	
 	MDRV_CPU_ADD(Z180, 10000000)			/* HD647180 CPU actually */
-	MDRV_CPU_MEMORY(hd647180_readmem,hd647180_writemem)
-#endif
+	MDRV_CPU_MEMORY(ghox_hd647180_readmem,ghox_hd647180_writemem)
+
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_REAL_60HZ_VBLANK_DURATION)
+	MDRV_INTERLEAVE(10)
 
 	MDRV_MACHINE_INIT(ghox)
 
@@ -4465,11 +4344,7 @@ static MACHINE_DRIVER_START( ghox )
 	MDRV_VIDEO_UPDATE(toaplan2_0)
 
 	/* sound hardware */
-/*	
-	MDRV_SOUND_ATTRIBUTES(SOUND_SUPPORTS_STEREO)
 	MDRV_SOUND_ADD(YM2151, ym2151_interface)
-*/
-	MDRV_SOUND_ADD(SAMPLES, ghox_samples_interface )
 MACHINE_DRIVER_END
 
 
@@ -5060,11 +4935,22 @@ ROM_START( ghox )
 	ROM_LOAD16_BYTE( "tp021-01.u10", 0x000000, 0x020000, CRC(9e56ac67) SHA1(daf241d9e55a6e60fc004ed61f787641595b1e62) )
 	ROM_LOAD16_BYTE( "tp021-02.u11", 0x000001, 0x020000, CRC(15cac60f) SHA1(6efa3a50a5dfe6ef4072738d6a7d0d95dca8a675) )
 
-#if HD64x180
 	ROM_REGION( 0x10000, REGION_CPU2, 0 )			/* Sound HD647180 code */
-	/* sound CPU is a HD647180 (Z180) with internal ROM - not yet supported */
-	ROM_LOAD( "hd647180.021", 0x00000, 0x08000, NO_DUMP )
-#endif
+    ROM_LOAD( "hd647180.021", 0x00000, 0x08000, CRC(6ab59e5b) SHA1(d814dd3a8f1ee638794e2bd422eed4247ba4a15e) )
+
+	ROM_REGION( 0x100000, REGION_GFX1, ROMREGION_DISPOSE )
+	ROM_LOAD( "tp021-03.u36", 0x000000, 0x080000, CRC(a15d8e9d) SHA1(640a33997bdce8e84bea6a944139716379839037) )
+	ROM_LOAD( "tp021-04.u37", 0x080000, 0x080000, CRC(26ed1c9a) SHA1(37da8af86ea24327444c2d4ad3dfbd936208d43d) )
+ROM_END
+
+ROM_START( ghoxj ) /* 8-way joystick for controls */
+	ROM_REGION( 0x040000, REGION_CPU1, 0 )			/* Main 68K code */
+	ROM_LOAD16_BYTE( "tp021-01a.u10", 0x000000, 0x020000, CRC(c11b13c8) SHA1(da7defc1d3b6ddded910ba56c31fbbdb5ed57b09) )
+	ROM_LOAD16_BYTE( "tp021-02a.u11", 0x000001, 0x020000, CRC(8d426767) SHA1(1ed4a8bcbf4352257e7d58cb5c2c91eb48c2f047) )
+
+
+	ROM_REGION( 0x10000, REGION_CPU2, 0 )			/* Sound HD647180 code */
+    ROM_LOAD( "hd647180.021", 0x00000, 0x08000, CRC(6ab59e5b) SHA1(d814dd3a8f1ee638794e2bd422eed4247ba4a15e) )
 
 	ROM_REGION( 0x100000, REGION_GFX1, ROMREGION_DISPOSE )
 	ROM_LOAD( "tp021-03.u36", 0x000000, 0x080000, CRC(a15d8e9d) SHA1(640a33997bdce8e84bea6a944139716379839037) )
@@ -5621,7 +5507,8 @@ ROM_END
 
 /*   ( YEAR  NAME      PARENT    MACHINE   INPUT     INIT      MONITOR COMPANY    FULLNAME     FLAGS ) */
 GAME ( 1991, tekipaki, 0,        tekipaki, tekipaki, T2_Z180,  ROT0,   "Toaplan", "Teki Paki" )
-GAME ( 1991, ghox,     0,        ghox,     ghox,     T2_Z180,  ROT270, "Toaplan", "Ghox" )
+GAME ( 1991, ghox,     0,        ghox,     ghox,     T2_Z180,  ROT270, "Toaplan", "Ghox (spinner)" )
+GAME ( 1991, ghoxj,    ghox,     ghox,     ghox,     T2_Z180,  ROT270, "Toaplan", "Ghox (joystick)" )
 GAMEX( 1992, dogyuun,  0,        dogyuun,  dogyuun,  T2_Zx80,  ROT270, "Toaplan", "Dogyuun", GAME_NO_SOUND )
 GAMEX( 1993, kbash,    0,        kbash,    kbash,    T2_Zx80,  ROT0,   "Toaplan", "Knuckle Bash", GAME_IMPERFECT_SOUND )
 GAME(  1999, kbash2,   0,        kbash2,   kbash2,   T2_noZ80, ROT0,   "Toaplan", "Knuckle Bash 2" )
