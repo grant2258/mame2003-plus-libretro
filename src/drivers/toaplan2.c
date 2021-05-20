@@ -251,7 +251,6 @@ static data16_t *Zx80_shared_ram;		/* Really 8bit RAM connected to Z180 */
 static data16_t *battleg_commram16;		/* Comm ram used in Battle Garegga */
 static data16_t *raizing_cpu_comm16;	/* Raizing commands for the Z80 */
 static data8_t  raizing_cpu_reply[2];	/* Raizing replies to the 68K */
-
 /************ Video RAM related values ************/
 extern data16_t *toaplan2_txvideoram16;
 extern data16_t *toaplan2_txvideoram16_offs;
@@ -674,6 +673,18 @@ static WRITE16_HANDLER( toaplan2_shared_w )
 	}
 }
 
+static READ16_HANDLER( toaplan2_shared8_r )
+{
+	return toaplan2_shared_ram[offset] & 0xff;
+}
+
+static WRITE_HANDLER( toaplan2_shared8_w )
+{
+	
+		toaplan2_shared_ram[offset] = data & 0xff;
+	}
+
+
 static WRITE16_HANDLER( toaplan2_hd647180_cpu_w )
 {
 	if (ACCESSING_LSB)
@@ -916,6 +927,15 @@ static READ16_HANDLER( shared_ram_r )
 	return toaplan2_shared_ram16[offset] & 0xff;
 }
 
+static READ_HANDLER( shared_ram8_r )
+{
+/*	Other games using a Zx80 based secondary CPU, have shared memory between
+	the 68000 and the Zx80 CPU. The 68000 reads the status of the Zx80
+	via a location of the shared memory.
+*/
+	return toaplan2_shared_ram16[offset] & 0xff;
+}
+
 static WRITE16_HANDLER( shared_ram_w )
 {
 	if (ACCESSING_LSB)
@@ -937,6 +957,11 @@ static WRITE16_HANDLER( shared_ram_w )
 		}
 		toaplan2_shared_ram16[offset] = data;
 	}
+}
+
+static WRITE_HANDLER( shared_ram8_w )
+{
+		toaplan2_shared_ram16[offset] = data;
 }
 
 static READ16_HANDLER( Zx80_status_port_r )
@@ -1384,7 +1409,7 @@ static MEMORY_WRITE16_START( tekipaki_writemem )
 	{ 0x140008, 0x140009, toaplan2_0_scroll_reg_select_w },
 	{ 0x14000c, 0x14000d, toaplan2_0_scroll_reg_data_w },
 	{ 0x180040, 0x180041, toaplan2_coin_word_w },	/* Coin count/lock */
-	{ 0x180070, 0x180071, toaplan2_hd647180_cpu_w }, /* MCU commands */
+//	{ 0x180070, 0x180071, toaplan2_hd647180_cpu_w }, /* MCU commands */
 MEMORY_END
 
 static MEMORY_READ16_START( ghox_readmem )
@@ -1395,7 +1420,8 @@ static MEMORY_READ16_START( ghox_readmem )
 	{ 0x100000, 0x100001, ghox_p1_h_analog_r },		/* Paddle 1 */
 	{ 0x140004, 0x140007, toaplan2_0_videoram16_r },
 	{ 0x14000c, 0x14000d, toaplan2_inputport_0_word_r },	/* VBlank */
-	{ 0x180000, 0x180fff, toaplan2_shared_r },
+//	{ 0x180000, 0x180001, toaplan2_hd647180_cpu_w }, /* MCU commands */
+	{ 0x180000, 0x180fff, shared_ram_r },
 	{ 0x18100c, 0x18100d, input_port_6_word_r },	/* Territory Jumper block */
 MEMORY_END
 
@@ -1407,7 +1433,7 @@ static MEMORY_WRITE16_START( ghox_writemem )
 	{ 0x140004, 0x140007, toaplan2_0_videoram16_w },/* Tile/Sprite VideoRAM */
 	{ 0x140008, 0x140009, toaplan2_0_scroll_reg_select_w },
 	{ 0x14000c, 0x14000d, toaplan2_0_scroll_reg_data_w },
-	{ 0x180000, 0x180fff, toaplan2_shared_w },
+	{ 0x180000, 0x180fff, shared_ram_w },
 	{ 0x181000, 0x181001, toaplan2_coin_word_w },
 MEMORY_END
 
@@ -2058,7 +2084,7 @@ MEMORY_END
 
 static MEMORY_WRITE_START( sound_writemem )
 	{ 0x0000, 0x7fff, MWA_ROM },
-	{ 0x8000, 0x87ff, MWA_RAM, &toaplan2_shared_ram },
+	{ 0x8000, 0x87ff, MWA_RAM },
 	{ 0xe000, 0xe000, YM3812_control_port_0_w },
 	{ 0xe001, 0xe001, YM3812_write_port_0_w },
 MEMORY_END
@@ -2176,7 +2202,7 @@ static MEMORY_READ_START( ghox_hd647180_readmem )
     { 0x00000, 0x03fff, MRA_ROM },  /* Internal 16k byte ROM */
 	{ 0x0fe00, 0x0ffff, MRA_RAM },  /* Internal 512 byte RAM */
 	{ 0x3fe00, 0x3ffff, MRA_RAM },   /* RAM (is this actually just internal RAM getting mapped badly?) */
-	{ 0x40000, 0x4f7ff, MRA_RAM },
+	{ 0x40000, 0x4f7ff, shared_ram8_r },
 	{ 0x80002, 0x80002, input_port_4_r },
 	{ 0x80004, 0x80004, input_port_5_r },
 	{ 0x80006, 0x80006, MRA_NOP }, // nothing?
@@ -2191,7 +2217,7 @@ static MEMORY_WRITE_START( ghox_hd647180_writemem )
     { 0x00000, 0x03fff, MWA_ROM },   /* Internal 16k byte ROM */
 	{ 0x0fe00, 0x0ffff, MWA_RAM },  /* Internal 512 byte RAM */
 	{ 0x3fe00, 0x3ffff, MWA_RAM },  /* RAM (is this actually just internal RAM getting mapped badly?) */
-	{ 0x40000, 0x4f7ff, MWA_RAM, &toaplan2_shared_ram },
+	{ 0x40000, 0x4f7ff, shared_ram8_w, &toaplan2_shared_ram16},
 	{ 0x8000e, 0x8000f, YM2151_word_0_w },
 MEMORY_END
 
@@ -4277,7 +4303,7 @@ static MACHINE_DRIVER_START( ghox )
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(DEFAULT_REAL_60HZ_VBLANK_DURATION)
-	MDRV_INTERLEAVE(10)
+	MDRV_INTERLEAVE(100)
 
 	MDRV_MACHINE_INIT(ghox)
 
