@@ -2084,7 +2084,7 @@ MEMORY_END
 
 static MEMORY_WRITE_START( sound_writemem )
 	{ 0x0000, 0x7fff, MWA_ROM },
-	{ 0x8000, 0x87ff, MWA_RAM },
+	{ 0x8000, 0x87ff, MWA_RAM, &toaplan2_shared_ram },
 	{ 0xe000, 0xe000, YM3812_control_port_0_w },
 	{ 0xe001, 0xe001, YM3812_write_port_0_w },
 MEMORY_END
