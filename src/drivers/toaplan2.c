@@ -368,6 +368,7 @@ static MACHINE_INIT( toaplan2 )		/* machine_init_toaplan2(); */
 
 static MACHINE_INIT( ghox )
 {
+	toaplan2_shared_ram16 = auto_malloc(0xFFF);
 	old_p1_paddle_h = 0;
 	old_p1_paddle_v = 0;
 	old_p2_paddle_h = 0;
@@ -673,18 +674,6 @@ static WRITE16_HANDLER( toaplan2_shared_w )
 	}
 }
 
-static READ16_HANDLER( toaplan2_shared8_r )
-{
-	return toaplan2_shared_ram[offset] & 0xff;
-}
-
-static WRITE_HANDLER( toaplan2_shared8_w )
-{
-	
-		toaplan2_shared_ram[offset] = data & 0xff;
-	}
-
-
 static WRITE16_HANDLER( toaplan2_hd647180_cpu_w )
 {
 	if (ACCESSING_LSB)
@@ -716,7 +705,7 @@ static WRITE16_HANDLER( pipibibi_z80_task_w )
 	}
 }
 
-static READ_HANDLER( ghox_p1_h_analog_r )
+static READ16_HANDLER( ghox_p1_h_analog_r )
 {
 	INT8 value, new_value;
 
@@ -742,7 +731,7 @@ static READ_HANDLER( ghox_p1_v_analog_r )
 	return (input_port_1_r(0) | 1);
 }
 
-static READ_HANDLER( ghox_p2_h_analog_r )
+static READ16_HANDLER( ghox_p2_h_analog_r )
 {
 	INT8 value, new_value;
 
@@ -1409,7 +1398,7 @@ static MEMORY_WRITE16_START( tekipaki_writemem )
 	{ 0x140008, 0x140009, toaplan2_0_scroll_reg_select_w },
 	{ 0x14000c, 0x14000d, toaplan2_0_scroll_reg_data_w },
 	{ 0x180040, 0x180041, toaplan2_coin_word_w },	/* Coin count/lock */
-//	{ 0x180070, 0x180071, toaplan2_hd647180_cpu_w }, /* MCU commands */
+	{ 0x180070, 0x180071, toaplan2_hd647180_cpu_w }, /* MCU commands */
 MEMORY_END
 
 static MEMORY_READ16_START( ghox_readmem )
@@ -1420,7 +1409,6 @@ static MEMORY_READ16_START( ghox_readmem )
 	{ 0x100000, 0x100001, ghox_p1_h_analog_r },		/* Paddle 1 */
 	{ 0x140004, 0x140007, toaplan2_0_videoram16_r },
 	{ 0x14000c, 0x14000d, toaplan2_inputport_0_word_r },	/* VBlank */
-//	{ 0x180000, 0x180001, toaplan2_hd647180_cpu_w }, /* MCU commands */
 	{ 0x180000, 0x180fff, shared_ram_r },
 	{ 0x18100c, 0x18100d, input_port_6_word_r },	/* Territory Jumper block */
 MEMORY_END
@@ -2197,7 +2185,7 @@ READ_HANDLER(tekipaki_cmdavailable_r)
 	else return 0x00;
 };
 
-
+//we initilaze shared ram at init use auto_malloc to not malloc
 static MEMORY_READ_START( ghox_hd647180_readmem )
     { 0x00000, 0x03fff, MRA_ROM },  /* Internal 16k byte ROM */
 	{ 0x0fe00, 0x0ffff, MRA_RAM },  /* Internal 512 byte RAM */
@@ -2217,7 +2205,7 @@ static MEMORY_WRITE_START( ghox_hd647180_writemem )
     { 0x00000, 0x03fff, MWA_ROM },   /* Internal 16k byte ROM */
 	{ 0x0fe00, 0x0ffff, MWA_RAM },  /* Internal 512 byte RAM */
 	{ 0x3fe00, 0x3ffff, MWA_RAM },  /* RAM (is this actually just internal RAM getting mapped badly?) */
-	{ 0x40000, 0x4f7ff, shared_ram8_w, &toaplan2_shared_ram16},
+	{ 0x40000, 0x4f7ff, shared_ram8_w,},
 	{ 0x8000e, 0x8000f, YM2151_word_0_w },
 MEMORY_END
 
