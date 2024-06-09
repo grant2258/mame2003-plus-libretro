@@ -192,8 +192,8 @@ WRITE16_HANDLER( TC0110PCR_step1_rbswap_word_w );	/* swaps red and blue componen
 WRITE16_HANDLER( TC0110PCR_step1_4bpg_word_w );	/* only 4 bits per color gun */
 
 int TC0360PRI_vh_start(void);	/* must be called to ensure regs saved in state.c */
-WRITE_HANDLER( TC0360PRI_w );
-READ_HANDLER( TC0360PRI_r );
+WRITE32_HANDLER( TC0360PRI_w );
+READ32_HANDLER( TC0360PRI_r );
 WRITE16_HANDLER( TC0360PRI_halfword_w );
 WRITE16_HANDLER( TC0360PRI_halfword_swap_w );
 

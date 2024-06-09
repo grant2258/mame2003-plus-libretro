@@ -3273,50 +3273,81 @@ int TC0360PRI_vh_start(void)
 	return 0;
 }
 
-WRITE_HANDLER( TC0360PRI_w )
+UINT32 TC0360PRI_mem[16];
+WRITE32_HANDLER( TC0360PRI_w )
 {
-	TC0360PRI_regs[offset] = data;
-	log_cb(RETRO_LOG_INFO, LOGPRE " offset:%02x data:%02x\n", offset, data);
-if (offset >= 0x0a)
-	usrintf_showmessage("write %02x to unused TC0360PRI reg %x",data,offset);
-#if 1
-#define regs TC0360PRI_regs
-	usrintf_showmessage("%02x %02x  %02x %02x  %02x %02x %02x %02x %02x %02x",
-		regs[0x00],regs[0x01],regs[0x02],regs[0x03],
-		regs[0x04],regs[0x05],regs[0x06],regs[0x07],
-		regs[0x08],regs[0x09]);
-#endif
+	UINT8 reg;
+	int count;  
+	if (ACCESSING_MSB32)
+	{
+		reg = data >> 24; 
+		count=0; 
+		TC0360PRI_regs[offset * 4 + count]=reg;
+	}
+	
+	else if (ACCESSING_MSB)
+	{
+		reg = data >> 8;
+		count=2; 
+		TC0360PRI_regs[offset * 4 + count]=reg;
+	}
+	
+	else if (mem_mask == 0xff00ffff)
+	{
+		reg = (data >> 16 );
+		count=1;
+		TC0360PRI_regs[offset * 4 + count]=reg;
+
+	}
+	
+	else 
+	{ 
+		reg=data;
+		count=3;
+		TC0360PRI_regs[offset * 4 + count]=reg;
+
+	}
+	
+
+	
+	TC0360PRI_mem[offset]=reg;
+	#define regs TC0360PRI_regs
+	usrintf_showmessage("%02x %02x  %02x %02x  %02x %02x %02x %02x %02x %02x\n",
+		TC0360PRI_regs[0x00],TC0360PRI_regs[0x01],TC0360PRI_regs[0x02],TC0360PRI_regs[0x03],
+		TC0360PRI_regs[0x04],TC0360PRI_regs[0x05],TC0360PRI_regs[0x06],TC0360PRI_regs[0x07],
+		TC0360PRI_regs[0x08],TC0360PRI_regs[0x09]);
 }
 
-READ_HANDLER( TC0360PRI_r )
+READ32_HANDLER( TC0360PRI_r )
 {
-	return TC0360PRI_regs[offset];
+	return TC0360PRI_mem[offset];
 }
 
 WRITE16_HANDLER( TC0360PRI_halfword_w )
 {
 	if (ACCESSING_LSB)
 	{
-		TC0360PRI_w(offset,data & 0xff);
+		TC0360PRI_w(offset,data & 0xff, mem_mask);
 #if 0
 if (data & 0xff00)
-{ log_cb(RETRO_LOG_DEBUG, LOGPRE "CPU #0 PC %06x: warning - write %02x to MSB of TC0360PRI address %02x\n",activecpu_get_pc(),data,offset); }
+{ log_cb(RETRO_LOG_INFO, LOGPRE "CPU #0 PC %06x: warning - write %02x to MSB of TC0360PRI address %02x\n",activecpu_get_pc(),data,offset); }
 	else
-{ log_cb(RETRO_LOG_DEBUG, LOGPRE "CPU #0 PC %06x: warning - write %02x to MSB of TC0360PRI address %02x\n",activecpu_get_pc(),data,offset); }
+{ log_cb(RETRO_LOG_INFO, LOGPRE "CPU #0 PC %06x: warning - write %02x to MSB of TC0360PRI address %02x\n",activecpu_get_pc(),data,offset); }
 #endif
 	}
 }
 
 WRITE16_HANDLER( TC0360PRI_halfword_swap_w )
 {
+log_cb(RETRO_LOG_INFO, LOGPRE "CPU #0 PC %06x: warning - write %02x to LSB of TC0360PRI address %02x\n",activecpu_get_pc(),data,offset);
 	if (ACCESSING_MSB)
 	{
-		TC0360PRI_w(offset,(data >> 8) & 0xff);
+		TC0360PRI_w(offset,data & 0xff, mem_mask );
 #if 0
 if (data & 0xff)
-{ log_cb(RETRO_LOG_DEBUG, LOGPRE "CPU #0 PC %06x: warning - write %02x to LSB of TC0360PRI address %02x\n",activecpu_get_pc(),data,offset); }
+{ log_cb(RETRO_LOG_INFO, LOGPRE "CPU #0 PC %06x: warning - write %02x to LSB of TC0360PRI address %02x\n",activecpu_get_pc(),data,offset); }
 	else
-{ log_cb(RETRO_LOG_DEBUG, LOGPRE "CPU #0 PC %06x: warning - write %02x to LSB of TC0360PRI address %02x\n",activecpu_get_pc(),data,offset); }
+{ log_cb(RETRO_LOG_INFO, LOGPRE "CPU #0 PC %06x: warning - write %02x to LSB of TC0360PRI address %02x\n",activecpu_get_pc(),data,offset); }
 #endif
 	}
 }
