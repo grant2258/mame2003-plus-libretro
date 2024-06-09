@@ -3276,16 +3276,21 @@ int TC0360PRI_vh_start(void)
 WRITE_HANDLER( TC0360PRI_w )
 {
 	TC0360PRI_regs[offset] = data;
-
+	log_cb(RETRO_LOG_INFO, LOGPRE " offset:%02x data:%02x\n", offset, data);
 if (offset >= 0x0a)
 	usrintf_showmessage("write %02x to unused TC0360PRI reg %x",data,offset);
-#if 0
+#if 1
 #define regs TC0360PRI_regs
 	usrintf_showmessage("%02x %02x  %02x %02x  %02x %02x %02x %02x %02x %02x",
 		regs[0x00],regs[0x01],regs[0x02],regs[0x03],
 		regs[0x04],regs[0x05],regs[0x06],regs[0x07],
 		regs[0x08],regs[0x09]);
 #endif
+}
+
+READ_HANDLER( TC0360PRI_r )
+{
+	return TC0360PRI_regs[offset];
 }
 
 WRITE16_HANDLER( TC0360PRI_halfword_w )
