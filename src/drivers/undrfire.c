@@ -491,6 +491,12 @@ static WRITE32_HANDLER( cbombers_adc_w )
 	timer_set(TIME_IN_CYCLES(10000,0),0, undrfire_interrupt5);
 }
 
+
+static READ32_HANDLER( color_ram_r )
+{
+	return paletteram32[offset];
+}
+
 /***********************************************************
 			 MEMORY STRUCTURES
 ***********************************************************/
@@ -547,7 +553,7 @@ static MEMORY_READ32_START( cbombers_readmem )
 	{ 0xc00000, 0xc00007, MRA32_RAM }, /* LAN controller? */
 	{ 0xe00000, 0xe0ffff, MRA32_RAM },
 MEMORY_END
-
+ UINT32 *TC0360PRI_mem;
 static MEMORY_WRITE32_START( cbombers_writemem )
     { 0x000000, 0x1fffff, MWA32_ROM },
 	{ 0x200000, 0x21ffff, MWA32_RAM },
@@ -561,7 +567,7 @@ static MEMORY_WRITE32_START( cbombers_writemem )
 	{ 0x900000, 0x90ffff, TC0100SCN_long_w },		/* piv tilemaps */
 	{ 0x920000, 0x92000f, TC0100SCN_ctrl_long_w },
     { 0xa00000, 0xa0ffff, color_ram_w, &paletteram32 },
-	{ 0xb00000, 0xb0000f, TC0360PRI_w }, /* priority */
+	{ 0xb00000, 0xb0000f, TC0360PRI_w, &TC0360PRI_mem}, /* priority */
 	{ 0xc00000, 0xc00007, MWA32_RAM },/* LAN controller? */
 	{ 0xd00000, 0xd00003, rotate_control_w },	/* perhaps port based rotate control? */
 	{ 0xe00000, 0xe0ffff, MWA32_RAM, &shared_ram },

@@ -3272,50 +3272,25 @@ int TC0360PRI_vh_start(void)
 	state_save_register_UINT8("TC0360PRI", 0, "registers", TC0360PRI_regs, 16);
 	return 0;
 }
-
-UINT32 TC0360PRI_mem[16];
+extern  UINT32 *TC0360PRI_mem;
 WRITE32_HANDLER( TC0360PRI_w )
 {
-	UINT8 reg;
-	int count;  
-	if (ACCESSING_MSB32)
-	{
-		reg = data >> 24; 
-		count=0; 
-		TC0360PRI_regs[offset * 4 + count]=reg;
-	}
-	
-	else if (ACCESSING_MSB)
-	{
-		reg = data >> 8;
-		count=2; 
-		TC0360PRI_regs[offset * 4 + count]=reg;
-	}
-	
-	else if (mem_mask == 0xff00ffff)
-	{
-		reg = (data >> 16 );
-		count=1;
-		TC0360PRI_regs[offset * 4 + count]=reg;
+	INT32 a;
+	COMBINE_DATA(&TC0360PRI_mem[offset]);
+	a= TC0360PRI_mem[offset];
+	TC0360PRI_regs[offset * 4 +0] = (a &0xff000000) >> 24;
+	TC0360PRI_regs[offset * 4 +1] = (a &0xff0000) >> 16;
+	TC0360PRI_regs[offset * 4 +2] = (a &0xff00) >> 8;
+	TC0360PRI_regs[offset * 4 +3] = (a &0xff);
 
-	}
-	
-	else 
-	{ 
-		reg=data;
-		count=3;
-		TC0360PRI_regs[offset * 4 + count]=reg;
-
-	}
-	
-
-	
-	TC0360PRI_mem[offset]=reg;
-	#define regs TC0360PRI_regs
-	usrintf_showmessage("%02x %02x  %02x %02x  %02x %02x %02x %02x %02x %02x\n",
+	if (0)
+	{
+		log_cb(RETRO_LOG_INFO, LOGPRE "| %02x %02x %02x %02x | %02x %02x %02x %02x | %02x %02x %02x %02x | %02x %02x %02x %02x |\n",
 		TC0360PRI_regs[0x00],TC0360PRI_regs[0x01],TC0360PRI_regs[0x02],TC0360PRI_regs[0x03],
 		TC0360PRI_regs[0x04],TC0360PRI_regs[0x05],TC0360PRI_regs[0x06],TC0360PRI_regs[0x07],
-		TC0360PRI_regs[0x08],TC0360PRI_regs[0x09]);
+		TC0360PRI_regs[0x08],TC0360PRI_regs[0x09],TC0360PRI_regs[0x0a],TC0360PRI_regs[0x0b],
+		TC0360PRI_regs[0x0c],TC0360PRI_regs[0x0d],TC0360PRI_regs[0x0e],TC0360PRI_regs[0x0f]); 
+	}
 }
 
 READ32_HANDLER( TC0360PRI_r )
