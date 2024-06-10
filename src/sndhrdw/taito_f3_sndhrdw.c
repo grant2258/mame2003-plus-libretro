@@ -211,12 +211,13 @@ WRITE16_HANDLER(es5510_dsp_w)
 		case 0x03: break;
 
 		case 0x80: /* Read select - GPR + INSTR */
-			log_cb(RETRO_LOG_DEBUG, LOGPRE "ES5510:  Read GPR/INSTR %06x (%06x)\n",data,es5510_gpr[data]);
+			
 
 			/* Check if a GPR is selected */
 			if (data<0xc0) {
 				es_tmp=0;
 				es5510_gpr_latch=es5510_gpr[data];
+				log_cb(RETRO_LOG_DEBUG, LOGPRE "ES5510:  Read GPR/INSTR %06x (%06x)\n",data,es5510_gpr[data]);
 			} else es_tmp=1;
 			break;
 
