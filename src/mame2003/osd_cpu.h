@@ -98,12 +98,12 @@ extern struct retro_perf_callback perf_cb;
  * which expects 'int' really.
  ******************************************************************************/
 typedef union {
-#ifdef MSB_FIRST
-	struct { UINT8 h3,h2,h,l; } b;
-	struct { UINT16 h,l; } w;
-#else
+#ifdef LSB_FIRST
 	struct { UINT8 l,h,h2,h3; } b;
 	struct { UINT16 l,h; } w;
+#else
+	struct { UINT8 h3,h2,h,l; } b;
+	struct { UINT16 h,l; } w;
 #endif
 	UINT32 d;
 }	PAIR;

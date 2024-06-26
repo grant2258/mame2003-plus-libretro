@@ -375,10 +375,15 @@ static struct cpu_info v70_i =
 #define PortRead32  v60.info.pr32
 #define PortWrite32 v60.info.pw32
 
+/* non ALIGN_INTS failing on OpRead8 look into it */
 #if defined(LSB_FIRST) && !defined(ALIGN_INTS)
-#define OpRead8(a)	(OP_ROM[a])
-#define OpRead16(a)	(*(UINT16 *)&OP_ROM[a])
-#define OpRead32(a)	(*(UINT32 *)&OP_ROM[a])
+//#define OpRead8(a)	OP_ROM[a]
+//#define OpRead16(a)	(*(UINT16 *)&OP_ROM[a])
+//#define OpRead32(a)	(*(UINT32 *)&OP_ROM[a])
+#define OpRead8     v60.info.mr8
+#define OpRead16    v60.info.mr16
+#define OpRead32    v60.info.mr32
+
 #else
 #define OpRead8     v60.info.mr8
 #define OpRead16    v60.info.mr16

@@ -3241,34 +3241,10 @@ static DRIVER_INIT( arescue )
 	install_mem_read16_handler(0, 0x81000f, 0x81000f, arescue_81000f_r);	/*  1player game*/
 }
 
-
-static UINT16 MemRead16_16(offs_t address)
-{
-	if (!(address & 1))
-		return cpu_readmem24lew_word(address);
-	else
-	{
-		UINT16 result = cpu_readmem24lew(address);
-		return result | cpu_readmem24lew(address + 1) << 8;
-	}
-}
-
-static void MemWrite16_16(offs_t address, UINT16 data)
-{
-	if (!(address & 1))
-		cpu_writemem24lew_word(address, data);
-	else
-	{
-		cpu_writemem24lew(address, data);
-		cpu_writemem24lew(address + 1, data >> 8);
-	}
-}
-
-
 #define program_read_byte  cpu_readmem24lew
 #define program_write_byte cpu_writemem24lew
-#define program_read_word   MemRead16_16
-#define program_write_word MemWrite16_16
+#define program_read_word  cpu_readmem24lew_word
+#define program_write_word cpu_writemem24lew_word
 
 
 

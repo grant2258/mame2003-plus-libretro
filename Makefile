@@ -10,7 +10,7 @@ CPU_ARCH      ?= 0 # as of November 2018 this flag doesn't seem to be used but i
 
 LIBS          ?=
 
-HIDE ?= @
+#HIDE ?= @
 
 ifneq ($(SANITIZER),)
 	CFLAGS   := -fsanitize=$(SANITIZER) $(CFLAGS)
@@ -766,7 +766,9 @@ endif
 
 # Architecture-specific flags #############################
 ifeq ($(BIGENDIAN), 1)
-	PLATCFLAGS += -DMSB_FIRST
+	PLATCFLAGS += -DMSB_FIRST=1
+else 
+	PLATCFLAGS += -DLSB_FIRST=1
 endif
 # End of architecture-specific flags ######################
 
