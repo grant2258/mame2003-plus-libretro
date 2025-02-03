@@ -575,7 +575,7 @@ const struct GameDriver *test_drivers[] =
 	DRIVER( topracera )
 	DRIVER( ppspeed )
 	DRIVER( polepos2 )
-	DRIVER( polepos2a) 
+	DRIVER( polepos2a)
 	DRIVER( polepos2b )
 
 	/* no custom I/O in the following, HD63701 (or compatible) microcontroller instead */
@@ -2563,36 +2563,40 @@ V-V                           TP-027
 	DRIVER( ts2 )		/* Battle Arena Toshinden 2 (USA 951124) */
 	DRIVER( ts2j )		/* Battle Arena Toshinden 2 (JAPAN 951124) */
 	DRIVER( starglad )	/* Star Gladiator (USA 960627) */
-	DRIVER( sfex )		/* Street Fighter EX (ASIA 961219) */
-	DRIVER( sfexj )		/* Street Fighter EX (JAPAN 961130) */
+	DRIVER( sfex )  /* Street Fighter EX (USA 961219) */
+	DRIVER( sfexa )  /* Street Fighter EX (ASIA 961219) */
+	DRIVER( sfexj )  /* Street Fighter EX (JAPAN 961130) */
 	DRIVER( glpracr )	/* Gallop Racer (JAPAN Ver 9.01.12) */
 	DRIVER( sfexp )		/* Street Fighter EX Plus (USA 970311) */
 	DRIVER( sfexpj )	/* Street Fighter EX Plus (JAPAN 970311) */
+
+	/* Capcom ZN2 */
 	DRIVER( rvschool )	/* Rival Schools (ASIA 971117) */
 	DRIVER( jgakuen )	/* Justice Gakuen (JAPAN 971117) */
 	DRIVER( tgmj )		/* Tetris The Grand Master (JAPAN 980710) */
-
-	/* Capcom ZN2 */
 	DRIVER( sfex2 )		/* Street Fighter EX 2 (JAPAN 980312) */
-	DRIVER( sg2j )		/* Star Gladiator 2 (JAPAN 980316) */
+	DRIVER( plsmaswd )	/* Plasma Sword (USA 980316) */
+	DRIVER( stargld2 )	/* Star Gladiator 2 (JAPAN 980316) */
 	DRIVER( techromn )	/* Tech Romancer (USA 980914) */
 	DRIVER( kikaioh )	/* Kikaioh (JAPAN 980914) */
-	DRIVER( sfex2p )	/* Street Fighter EX 2 Plus (JAPAN 990611) */
-	DRIVER( strider2 )	/* Strider 2 (USA 991213) */
-	DRIVER( stridr2a )	/* Strider 2 (ASIA 991213) */
+	DRIVER( sfex2p )	/* Street Fighter EX 2 Plus (USA 990611) */
+	DRIVER( sfex2pj )	/* Street Fighter EX 2 Plus (JAPAN 990611) */
+	DRIVER( strider2 )	/* Strider 2 (ASIA 991213) */
 	DRIVER( shiryu2 )	/* Strider Hiryu 2 (JAPAN 991213) */
-						/* Rival Schools 2 */
 
 	/* Tecmo ZN1 */
 	DRIVER( glpracr2 )	/* Gallop Racer 2 (USA) */
 	DRIVER( glprac2j )	/* Gallop Racer 2 (JAPAN) */
 	DRIVER( glprac2l )	/* Gallop Racer 2 Link HW (JAPAN) */
 	DRIVER( doapp )		/* Dead Or Alive ++ (JAPAN) */
+	DRIVER( cbaj )		/* Cool Boaders Arcade Jam */
+	DRIVER( shngmtkb )  /* Shanghai Matekibuyuu */
 	DRIVER( tondemo )	/* Tondemo Crisis (JAPAN) */
 
 	/* PS Arcade 95 */
 	DRIVER( brvblade )	/* Brave Blade */
 	DRIVER( beastrzr )	/* Beastorizer */
+	DRIVER( beastrzb )	/* Beastorizer (bootleg?) */
 
 	/* Atari PSX */
 	DRIVER( primrag2 )	/* Primal Rage 2 */
@@ -2606,6 +2610,7 @@ V-V                           TP-027
 	DRIVER( sncwgltd )	/* Sonic Wings Limited (JAPAN) */
 
 	/* Taito FX1a */
+	DRIVER( psyfrcex )	/* Psychic Force EX (?) */
 	DRIVER( psyforce )	/* Psychic Force (JAPAN) */
 	DRIVER( sfchamp )	/* Super Football Champ (JAPAN) */
 	DRIVER( mgcldate )	/* Magical Date (JAPAN) */
@@ -2616,7 +2621,6 @@ V-V                           TP-027
 	DRIVER( ftimpcta )	/* Fighter's Impact Ace (JAPAN) */
 	DRIVER( gdarius )	/* G-Darius (JAPAN) */
 	DRIVER( gdarius2 )	/* G-Darius Ver.2 (JAPAN) */
-	DRIVER( beastrzb )	/* Beastorizer (bootleg)*/
 
 	/* Namco System 11 */
 	DRIVER( tekken )	/* Tekken (TE4/VER.C) */

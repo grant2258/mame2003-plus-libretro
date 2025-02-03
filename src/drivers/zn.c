@@ -125,7 +125,7 @@ Sound: Analog Devices ADSP-2181
 
 #define VERBOSE_LEVEL ( 0 )
 
-INLINE void verboselog( int n_level, const char *s_fmt, ... )
+static INLINE void verboselog( int n_level, const char *s_fmt, ... )
 {
 	if( VERBOSE_LEVEL >= n_level )
 	{
@@ -389,11 +389,11 @@ MEMORY_END
 
 /*
 static ADDRESS_MAP_START( zn_map, ADDRESS_SPACE_PROGRAM, 32 )
-	{ 0x00000000, 0x003fffff, AM_RAM	AM_SHARE(1) AM_BASE(&g_p_n_psxram) AM_SIZE(&g_n_psxramsize) // ram 
-	{ 0x00400000, 0x007fffff, AM_RAM AM_SHARE(1) // ram mirror 
-	{ 0x1f800000, 0x1f8003ff, AM_RAM // scratchpad 
+	{ 0x00000000, 0x003fffff, AM_RAM	AM_SHARE(1) AM_BASE(&g_p_n_psxram) AM_SIZE(&g_n_psxramsize) // ram
+	{ 0x00400000, 0x007fffff, AM_RAM AM_SHARE(1) // ram mirror
+	{ 0x1f800000, 0x1f8003ff, AM_RAM // scratchpad
 	{ 0x1f801000, 0x1f801007, AM_WRITENOP
-	{ 0x1f801008, 0x1f80100b, AM_RAM // ?? 
+	{ 0x1f801008, 0x1f80100b, AM_RAM // ??
 	{ 0x1f80100c, 0x1f80100f, AM_NOP
 	{ 0x1f801010, 0x1f80102f, AM_WRITENOP
 	{ 0x1f801010, 0x1f801013, AM_READNOP
@@ -407,7 +407,7 @@ static ADDRESS_MAP_START( zn_map, ADDRESS_SPACE_PROGRAM, 32 )
 	{ 0x1f801810, 0x1f801817, AM_READWRITE(psx_gpu_r, psx_gpu_w)
 	{ 0x1f801820, 0x1f801827, AM_READWRITE(psx_mdec_r, psx_mdec_w)
 	{ 0x1f801c00, 0x1f801dff, AM_READWRITE(psx_spu_r, psx_spu_w)
-	{ 0x1f802020, 0x1f802033, AM_RAM // ?? 
+	{ 0x1f802020, 0x1f802033, AM_RAM // ??
 	{ 0x1f802040, 0x1f802043, AM_WRITENOP
 	{ 0x1fa00000, 0x1fa00003, AM_READ(jamma_0_r)
 	{ 0x1fa00100, 0x1fa00103, AM_READ(jamma_1_r)
@@ -417,14 +417,14 @@ static ADDRESS_MAP_START( zn_map, ADDRESS_SPACE_PROGRAM, 32 )
 	{ 0x1fa10100, 0x1fa10103, AM_READ(jamma_5_r)
 	{ 0x1fa10200, 0x1fa10203, AM_READ(jamma_6_r)
 	{ 0x1fa10300, 0x1fa10303, AM_READWRITE(znsecsel_r, znsecsel_w)
-	{ 0x1faf0000, 0x1faf07ff, AM_RAM AM_BASE((data32_t **)&generic_nvram) AM_SIZE(&generic_nvram_size) // eeprom 
+	{ 0x1faf0000, 0x1faf07ff, AM_RAM AM_BASE((data32_t **)&generic_nvram) AM_SIZE(&generic_nvram_size) // eeprom
 	{ 0x1fb20000, 0x1fb20007, AM_READ(unknown_r)
-	{ 0x1fc00000, 0x1fc7ffff, AM_ROM AM_SHARE(2) AM_REGION(REGION_USER1, 0) // bios 
-	{ 0x80000000, 0x803fffff, AM_RAM AM_SHARE(1) // ram mirror 
-	{ 0x80400000, 0x807fffff, AM_RAM AM_SHARE(1) // ram mirror 
-	{ 0x9fc00000, 0x9fc7ffff, AM_ROM AM_SHARE(2) // bios mirror 
-	{ 0xa0000000, 0xa03fffff, AM_RAM AM_SHARE(1) // ram mirror 
-	{ 0xbfc00000, 0xbfc7ffff, AM_WRITENOP AM_ROM AM_SHARE(2) // bios mirror 
+	{ 0x1fc00000, 0x1fc7ffff, AM_ROM AM_SHARE(2) AM_REGION(REGION_USER1, 0) // bios
+	{ 0x80000000, 0x803fffff, AM_RAM AM_SHARE(1) // ram mirror
+	{ 0x80400000, 0x807fffff, AM_RAM AM_SHARE(1) // ram mirror
+	{ 0x9fc00000, 0x9fc7ffff, AM_ROM AM_SHARE(2) // bios mirror
+	{ 0xa0000000, 0xa03fffff, AM_RAM AM_SHARE(1) // ram mirror
+	{ 0xbfc00000, 0xbfc7ffff, AM_WRITENOP AM_ROM AM_SHARE(2) // bios mirror
 	{ 0xfffe0130, 0xfffe0133, AM_WRITENOP
 ADDRESS_MAP_END
 */
@@ -435,7 +435,7 @@ MEMORY_END
 
 static MEMORY_READ_START( qsound_readmem )
 	{ 0x0000, 0x7fff, MRA_ROM },
-	{ 0x8000, 0xbfff, MRA_BANK10 },	// banked (contains music data) 
+	{ 0x8000, 0xbfff, MRA_BANK10 },	// banked (contains music data)
 	{ 0xd007, 0xd007, qsound_status_r },
 	{ 0xf000, 0xffff, MRA_RAM },
 MEMORY_END
@@ -443,7 +443,7 @@ MEMORY_END
 static MEMORY_WRITE_START( qsound_writemem )
 	{ 0x0000, 0xbfff, MWA_ROM },
 	{ 0xd000, 0xd000, qsound_data_h_w },
-	{ 0xd001, 0xd001, qsound_data_l_w }, 
+	{ 0xd001, 0xd001, qsound_data_l_w },
 	{ 0xd002, 0xd002, qsound_cmd_w },
 	{ 0xd003, 0xd003, qsound_bankswitch_w },
 	{ 0xf000, 0xffff, MWA_RAM },
@@ -451,7 +451,7 @@ MEMORY_END
 
 static PORT_READ_START(qsound_readport)
 	{ 0x00, 0x00, soundlatch_r },
-MEMORY_END
+PORT_END
 
 static MEMORY_READ_START( link_readmem )
 MEMORY_END
@@ -1091,7 +1091,7 @@ static struct ide_interface atpsx_intf =
 	atpsx_interrupt
 };
 
-INLINE void psxwritebyte( UINT32 n_address, UINT8 n_data )
+static INLINE void psxwritebyte( UINT32 n_address, UINT8 n_data )
 {
 	*( (UINT8 *)g_p_n_psxram + BYTE_XOR_LE( n_address ) ) = n_data;
 }
@@ -1257,7 +1257,7 @@ ADDRESS_MAP_END
 static MEMORY_WRITE16_START(psarc_snd_write)
 	{ 0x000000, 0x07ffff, MWA16_ROM },
 	{ 0x080000, 0x0fffff, MWA16_RAM },
-	{ 0x100000, 0x10001f, psarc_ymf_w }, 
+	{ 0x100000, 0x10001f, psarc_ymf_w },
 	{ 0x000000, 0x07ffff, MWA16_NOP },
 	{ 0x100020, 0xffffff, MWA16_NOP },
 MEMORY_END
@@ -1645,21 +1645,43 @@ static READ_HANDLER( cbaj_z80_ready_r )
 }
 
 
+static MEMORY_READ_START( cbaj_z80_read)
+	{ 0x0000, 0x7fff,  MRA_ROM },
+	{ 0x8000, 0xffff,  MRA_RAM },
+MEMORY_END
 /*
 ADDRESS_MAP_START( cbaj_z80_map, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE( 0x0000, 0x7fff ) AM_ROM
-	AM_RANGE( 0x8000, 0xffff ) AM_RAM
+	{ 0x0000, 0x7fff,  AM_ROM },
+	{ 0x8000, 0xffff,  AM_RAM },
+ADDRESS_MAP_END
+*/
+static MEMORY_WRITE_START( cbaj_z80_write)
+	{ 0x0000, 0x7fff,  MWA_ROM },
+	{ 0x8000, 0xffff,  MWA_RAM },
+MEMORY_END
+
+
+static PORT_READ_START(cbaj_z80_port_read)
+	{ 0x84, 0x84, YMZ280B_status_0_r },
+	{ 0x85, 0x85, YMZ280B_status_0_r },
+	{ 0x90, 0x90, cbaj_z80_latch_r },
+	{ 0x91, 0x91, cbaj_z80_ready_r },
+PORT_END
+/*
+ADDRESS_MAP_START( cbaj_z80_port_map, ADDRESS_SPACE_IO, 8)
+	{ 0x84, 0x84, AM_READWRITE( YMZ280B_status_0_r, YMZ280B_register_0_w },
+	{ 0x85, 0x85, AM_READWRITE( YMZ280B_status_0_r, YMZ280B_data_0_w },
+	{ 0x90, 0x90, AM_READWRITE( cbaj_z80_latch_r, cbaj_z80_latch_w },
+	{ 0x91, 0x91, AM_READ( cbaj_z80_ready_r },
 ADDRESS_MAP_END
 */
 
-/*
-ADDRESS_MAP_START( cbaj_z80_port_map, ADDRESS_SPACE_IO, 8)
-	AM_RANGE( 0x84, 0x84 ) AM_READWRITE( YMZ280B_status_0_r, YMZ280B_register_0_w )
-	AM_RANGE( 0x85, 0x85 ) AM_READWRITE( YMZ280B_status_0_r, YMZ280B_data_0_w )
-	AM_RANGE( 0x90, 0x90 ) AM_READWRITE( cbaj_z80_latch_r, cbaj_z80_latch_w )
-	AM_RANGE( 0x91, 0x91 ) AM_READ( cbaj_z80_ready_r )
-ADDRESS_MAP_END
-*/
+static PORT_WRITE_START(cbaj_z80_port_write)
+	{ 0x84, 0x84, YMZ280B_register_0_w },
+	{ 0x85, 0x85, YMZ280B_data_0_w },
+	{ 0x90, 0x90, cbaj_z80_latch_w },
+PORT_END
+
 
 static struct YMZ280Binterface ymz280b_intf =
 {
@@ -1711,8 +1733,8 @@ static MACHINE_DRIVER_START( coh1002msnd )
 
 	MDRV_CPU_ADD( Z80, 8000000 )
 	MDRV_CPU_FLAGS( CPU_AUDIO_CPU )
-	MDRV_CPU_PROGRAM_MAP( cbaj_z80_map, 0 )
-	MDRV_CPU_IO_MAP( cbaj_z80_port_map, 0 )
+	MDRV_CPU_MEMORY( cbaj_z80_read, cbaj_z80_write )
+	MDRV_CPU_PORTS( cbaj_z80_port_read, cbaj_z80_port_write )
 
 	MDRV_FRAMES_PER_SECOND( 60 )
 	MDRV_VBLANK_DURATION( 0 )
@@ -1749,7 +1771,7 @@ static MACHINE_DRIVER_START( coh1002ml )
 	MDRV_CPU_VBLANK_INT( psx_vblank, 1 )
 
 	MDRV_CPU_ADD( Z80, 8000000 )
-	MDRV_CPU_PROGRAM_MAP( link_readmem, link_writemem )
+	MDRV_CPU_MEMORY( link_readmem, link_writemem )
 
 	MDRV_FRAMES_PER_SECOND( 60 )
 	MDRV_VBLANK_DURATION( 0 )
@@ -1973,7 +1995,7 @@ ROM_START( ts2 )
 	CPZN1_BIOS
 
 	ROM_REGION32_LE( 0x80000, REGION_USER3, 0 )
-	ROM_LOAD( "ts2u-04", 0x0000000, 0x080000, CRC(ddb52e7c) SHA1(e77891abae7681d911ef6eba2e0920d81433ebe6) ) 
+	ROM_LOAD( "ts2u-04", 0x0000000, 0x080000, CRC(ddb52e7c) SHA1(e77891abae7681d911ef6eba2e0920d81433ebe6) )
 
 	ROM_REGION32_LE( 0x0e00000, REGION_USER2, 0 )
 	ROM_LOAD( "ts2-05",  0x0000000, 0x400000, CRC(7f4228e2) SHA1(3690a76d19d97e55bc7b05a8456328697cfd7a77) )
@@ -2435,8 +2457,8 @@ ROM_START( shngmtkb )
 	TPS_BIOS
 
 	ROM_REGION32_LE( 0x01800000, REGION_USER2, 0 )
-	ROM_LOAD16_BYTE( "shmj-b.119",   0x0000001, 0x080000, CRC(65522c67) SHA1(b5981e5859aab742a87d6742feb9c55a3e6ba13f) ) 
-	ROM_LOAD16_BYTE( "shmj-a.120",   0x0000000, 0x080000, CRC(a789defa) SHA1(f8f0d1c9e3492cda652a9561ef1d549b92f73efd) ) 
+	ROM_LOAD16_BYTE( "shmj-b.119",   0x0000001, 0x080000, CRC(65522c67) SHA1(b5981e5859aab742a87d6742feb9c55a3e6ba13f) )
+	ROM_LOAD16_BYTE( "shmj-a.120",   0x0000000, 0x080000, CRC(a789defa) SHA1(f8f0d1c9e3492cda652a9561ef1d549b92f73efd) )
 	ROM_LOAD( "sh-00.217",           0x0800000, 0x400000, CRC(081fed1c) SHA1(fb18add9521b8b104329871b4c1b8ae5e0254f8b) )
 	ROM_LOAD( "sh-01.218",           0x0c00000, 0x400000, CRC(5a84ea96) SHA1(af4972cc10706999361d7505b975f5f1e1fc6761) )
 	ROM_LOAD( "sh-02.219",           0x1000000, 0x400000, CRC(c8f80d76) SHA1(51e4eac6cec8e37e5b8c0e7d341feea574add7da) )
@@ -2800,7 +2822,7 @@ ROM_START( nbajamex )
 	ROM_CONTINUE(             0x010000, 0x78000 )
 
 	ROM_REGION( 0x400000, REGION_SOUND1, 0 )
-	ROM_LOAD( "sound0.u48",   0x000000, 0x200000, CRC(38873b67) SHA1(b2f8d32270ae604c099a1b9b71d2e06468c7d4a9) ) 
+	ROM_LOAD( "sound0.u48",   0x000000, 0x200000, CRC(38873b67) SHA1(b2f8d32270ae604c099a1b9b71d2e06468c7d4a9) )
 	ROM_LOAD( "sound1.u49",   0x200000, 0x200000, CRC(57014589) SHA1(d360ff1c52424bd91a5a8d1a2a9c10bf7abb0602) )
 ROM_END
 
