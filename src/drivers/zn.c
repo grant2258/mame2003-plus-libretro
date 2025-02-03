@@ -329,7 +329,8 @@ static MEMORY_READ32_START( zn_readmem )
 	{ 0xbfc00000, 0xbfc7ffff, MRA32_BANK4 }, /* bios mirror */
 MEMORY_END
 
-
+static MEMORY_WRITE32_START( zn_writemem )
+MEMORY_END
 
 static MEMORY_READ_START(qsound_readmem)
 	{ 0x0000, 0x7fff, MRA_ROM },
