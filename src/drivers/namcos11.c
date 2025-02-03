@@ -519,7 +519,8 @@ static WRITE32_HANDLER( bankswitch_rom64_w )
 }
 
 static MEMORY_WRITE32_START( namcos11_writemem )
-	{ 0x00000000, 0x003fffff, MWA32_RAM },    /* ram */
+	{ 0x00000000, 0x003fffff, MWA32_RAM, &g_p_n_psxram, &g_n_psxramsize }, /* ram */
+ 
 	{ 0x1f800000, 0x1f8003ff, MWA32_BANK1 },  /* scratchpad */
 	{ 0x1f801000, 0x1f801007, MWA32_NOP },
 	{ 0x1f801008, 0x1f80100b, MWA32_RAM },    /* ?? */
