@@ -233,7 +233,7 @@ static VIDEO_UPDATE( konamigq )
 }
 
 static MEMORY_WRITE32_START( konamigq_writemem )
-	{ 0x00000000, 0x003fffff, MWA32_RAM },    /* ram */
+	{ 0x00000000, 0x003fffff, MWA32_RAM, &g_p_n_psxram, &g_n_psxramsize }, /* ram */
 	{ 0x1f000000, 0x1f00001f, am53cf96_w },
 	{ 0x1f100000, 0x1f10000f, soundr3k_w },
 	{ 0x1f180000, 0x1f180003, eeprom_w },

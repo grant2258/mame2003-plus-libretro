@@ -186,7 +186,7 @@ static void namcos12_rom_read( UINT32 n_address, INT32 n_size )
 }
 
 static MEMORY_WRITE32_START( namcos12_writemem )
-	{ 0x00000000, 0x003fffff, MWA32_RAM },    /* ram */
+	{ 0x00000000, 0x003fffff, MWA32_RAM, &g_p_n_psxram, &g_n_psxramsize }, /* ram */
 	{ 0x1f000000, 0x1f000003, bankoffset_w }, /* banking */
 	{ 0x1f008000, 0x1f008003, MWA32_NOP },    /* ?? */
 	{ 0x1f010000, 0x1f010003, MWA32_NOP },    /* ?? */
