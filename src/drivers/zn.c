@@ -383,98 +383,108 @@ static WRITE32_HANDLER( zn_qsound_w )
 	cpu_set_irq_line(1, IRQ_LINE_NMI, PULSE_LINE);
 }
 
+static MEMORY_READ32_START( zn_readmem )
+MEMORY_END
+
+
+/*
 static ADDRESS_MAP_START( zn_map, ADDRESS_SPACE_PROGRAM, 32 )
-	AM_RANGE(0x00000000, 0x003fffff) AM_RAM	AM_SHARE(1) AM_BASE(&g_p_n_psxram) AM_SIZE(&g_n_psxramsize) /* ram */
-	AM_RANGE(0x00400000, 0x007fffff) AM_RAM AM_SHARE(1) /* ram mirror */
-	AM_RANGE(0x1f800000, 0x1f8003ff) AM_RAM /* scratchpad */
-	AM_RANGE(0x1f801000, 0x1f801007) AM_WRITENOP
-	AM_RANGE(0x1f801008, 0x1f80100b) AM_RAM /* ?? */
-	AM_RANGE(0x1f80100c, 0x1f80100f) AM_NOP
-	AM_RANGE(0x1f801010, 0x1f80102f) AM_WRITENOP
-	AM_RANGE(0x1f801010, 0x1f801013) AM_READNOP
-	AM_RANGE(0x1f801014, 0x1f801017) AM_READ(psx_spu_delay_r)
-	AM_RANGE(0x1f801020, 0x1f801023) AM_READ(psx_com_delay_r)
-	AM_RANGE(0x1f801040, 0x1f80105f) AM_READWRITE(psx_sio_r, psx_sio_w)
-	AM_RANGE(0x1f801060, 0x1f80106f) AM_RAM
-	AM_RANGE(0x1f801070, 0x1f801077) AM_READWRITE(psx_irq_r, psx_irq_w)
-	AM_RANGE(0x1f801080, 0x1f8010ff) AM_READWRITE(psx_dma_r, psx_dma_w)
-	AM_RANGE(0x1f801100, 0x1f80113f) AM_READWRITE(psx_counter_r, psx_counter_w)
-	AM_RANGE(0x1f801810, 0x1f801817) AM_READWRITE(psx_gpu_r, psx_gpu_w)
-	AM_RANGE(0x1f801820, 0x1f801827) AM_READWRITE(psx_mdec_r, psx_mdec_w)
-	AM_RANGE(0x1f801c00, 0x1f801dff) AM_READWRITE(psx_spu_r, psx_spu_w)
-	AM_RANGE(0x1f802020, 0x1f802033) AM_RAM /* ?? */
-	AM_RANGE(0x1f802040, 0x1f802043) AM_WRITENOP
-	AM_RANGE(0x1fa00000, 0x1fa00003) AM_READ(jamma_0_r)
-	AM_RANGE(0x1fa00100, 0x1fa00103) AM_READ(jamma_1_r)
-	AM_RANGE(0x1fa00200, 0x1fa00203) AM_READ(jamma_2_r)
-	AM_RANGE(0x1fa00300, 0x1fa00303) AM_READ(jamma_3_r)
-	AM_RANGE(0x1fa10000, 0x1fa10003) AM_READ(jamma_4_r)
-	AM_RANGE(0x1fa10100, 0x1fa10103) AM_READ(jamma_5_r)
-	AM_RANGE(0x1fa10200, 0x1fa10203) AM_READ(jamma_6_r)
-	AM_RANGE(0x1fa10300, 0x1fa10303) AM_READWRITE(znsecsel_r, znsecsel_w)
-	AM_RANGE(0x1faf0000, 0x1faf07ff) AM_RAM AM_BASE((data32_t **)&generic_nvram) AM_SIZE(&generic_nvram_size) /* eeprom */
-	AM_RANGE(0x1fb20000, 0x1fb20007) AM_READ(unknown_r)
-	AM_RANGE(0x1fc00000, 0x1fc7ffff) AM_ROM AM_SHARE(2) AM_REGION(REGION_USER1, 0) /* bios */
-	AM_RANGE(0x80000000, 0x803fffff) AM_RAM AM_SHARE(1) /* ram mirror */
-	AM_RANGE(0x80400000, 0x807fffff) AM_RAM AM_SHARE(1) /* ram mirror */
-	AM_RANGE(0x9fc00000, 0x9fc7ffff) AM_ROM AM_SHARE(2) /* bios mirror */
-	AM_RANGE(0xa0000000, 0xa03fffff) AM_RAM AM_SHARE(1) /* ram mirror */
-	AM_RANGE(0xbfc00000, 0xbfc7ffff) AM_WRITENOP AM_ROM AM_SHARE(2) /* bios mirror */
-	AM_RANGE(0xfffe0130, 0xfffe0133) AM_WRITENOP
+	{ 0x00000000, 0x003fffff, AM_RAM	AM_SHARE(1) AM_BASE(&g_p_n_psxram) AM_SIZE(&g_n_psxramsize) // ram 
+	{ 0x00400000, 0x007fffff, AM_RAM AM_SHARE(1) // ram mirror 
+	{ 0x1f800000, 0x1f8003ff, AM_RAM // scratchpad 
+	{ 0x1f801000, 0x1f801007, AM_WRITENOP
+	{ 0x1f801008, 0x1f80100b, AM_RAM // ?? 
+	{ 0x1f80100c, 0x1f80100f, AM_NOP
+	{ 0x1f801010, 0x1f80102f, AM_WRITENOP
+	{ 0x1f801010, 0x1f801013, AM_READNOP
+	{ 0x1f801014, 0x1f801017, AM_READ(psx_spu_delay_r)
+	{ 0x1f801020, 0x1f801023, AM_READ(psx_com_delay_r)
+	{ 0x1f801040, 0x1f80105f, AM_READWRITE(psx_sio_r, psx_sio_w)
+	{ 0x1f801060, 0x1f80106f, AM_RAM
+	{ 0x1f801070, 0x1f801077, AM_READWRITE(psx_irq_r, psx_irq_w)
+	{ 0x1f801080, 0x1f8010ff, AM_READWRITE(psx_dma_r, psx_dma_w)
+	{ 0x1f801100, 0x1f80113f, AM_READWRITE(psx_counter_r, psx_counter_w)
+	{ 0x1f801810, 0x1f801817, AM_READWRITE(psx_gpu_r, psx_gpu_w)
+	{ 0x1f801820, 0x1f801827, AM_READWRITE(psx_mdec_r, psx_mdec_w)
+	{ 0x1f801c00, 0x1f801dff, AM_READWRITE(psx_spu_r, psx_spu_w)
+	{ 0x1f802020, 0x1f802033, AM_RAM // ?? 
+	{ 0x1f802040, 0x1f802043, AM_WRITENOP
+	{ 0x1fa00000, 0x1fa00003, AM_READ(jamma_0_r)
+	{ 0x1fa00100, 0x1fa00103, AM_READ(jamma_1_r)
+	{ 0x1fa00200, 0x1fa00203, AM_READ(jamma_2_r)
+	{ 0x1fa00300, 0x1fa00303, AM_READ(jamma_3_r)
+	{ 0x1fa10000, 0x1fa10003, AM_READ(jamma_4_r)
+	{ 0x1fa10100, 0x1fa10103, AM_READ(jamma_5_r)
+	{ 0x1fa10200, 0x1fa10203, AM_READ(jamma_6_r)
+	{ 0x1fa10300, 0x1fa10303, AM_READWRITE(znsecsel_r, znsecsel_w)
+	{ 0x1faf0000, 0x1faf07ff, AM_RAM AM_BASE((data32_t **)&generic_nvram) AM_SIZE(&generic_nvram_size) // eeprom 
+	{ 0x1fb20000, 0x1fb20007, AM_READ(unknown_r)
+	{ 0x1fc00000, 0x1fc7ffff, AM_ROM AM_SHARE(2) AM_REGION(REGION_USER1, 0) // bios 
+	{ 0x80000000, 0x803fffff, AM_RAM AM_SHARE(1) // ram mirror 
+	{ 0x80400000, 0x807fffff, AM_RAM AM_SHARE(1) // ram mirror 
+	{ 0x9fc00000, 0x9fc7ffff, AM_ROM AM_SHARE(2) // bios mirror 
+	{ 0xa0000000, 0xa03fffff, AM_RAM AM_SHARE(1) // ram mirror 
+	{ 0xbfc00000, 0xbfc7ffff, AM_WRITENOP AM_ROM AM_SHARE(2) // bios mirror 
+	{ 0xfffe0130, 0xfffe0133, AM_WRITENOP
 ADDRESS_MAP_END
+*/
 
-static ADDRESS_MAP_START( qsound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0x7fff) AM_READ(MRA8_ROM)
-	AM_RANGE(0x8000, 0xbfff) AM_READ(MRA8_BANK10)	/* banked (contains music data) */
-	AM_RANGE(0xd007, 0xd007) AM_READ(qsound_status_r)
-	AM_RANGE(0xf000, 0xffff) AM_READ(MRA8_RAM)
-ADDRESS_MAP_END
+static MEMORY_WRITE32_START( zn_writemem )
+MEMORY_END
 
-static ADDRESS_MAP_START( qsound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0xbfff) AM_WRITE(MWA8_ROM)
-	AM_RANGE(0xd000, 0xd000) AM_WRITE(qsound_data_h_w)
-	AM_RANGE(0xd001, 0xd001) AM_WRITE(qsound_data_l_w)
-	AM_RANGE(0xd002, 0xd002) AM_WRITE(qsound_cmd_w)
-	AM_RANGE(0xd003, 0xd003) AM_WRITE(qsound_bankswitch_w)
-	AM_RANGE(0xf000, 0xffff) AM_WRITE(MWA8_RAM)
-ADDRESS_MAP_END
 
-static ADDRESS_MAP_START( qsound_readport, ADDRESS_SPACE_IO, 8 )
-	AM_RANGE(0x00, 0x00) AM_READ(soundlatch_r)
-ADDRESS_MAP_END
+static MEMORY_READ_START( qsound_readmem )
+	{ 0x0000, 0x7fff, MRA_ROM },
+	{ 0x8000, 0xbfff, MRA_BANK10 },	// banked (contains music data) 
+	{ 0xd007, 0xd007, qsound_status_r },
+	{ 0xf000, 0xffff, MRA_RAM },
+MEMORY_END
 
-static ADDRESS_MAP_START( link_readmem, ADDRESS_SPACE_PROGRAM, 8 )
-ADDRESS_MAP_END
+static MEMORY_WRITE_START( qsound_writemem )
+	{ 0x0000, 0xbfff, MWA_ROM },
+	{ 0xd000, 0xd000, qsound_data_h_w },
+	{ 0xd001, 0xd001, qsound_data_l_w }, 
+	{ 0xd002, 0xd002, qsound_cmd_w },
+	{ 0xd003, 0xd003, qsound_bankswitch_w },
+	{ 0xf000, 0xffff, MWA_RAM },
+MEMORY_END
 
-static ADDRESS_MAP_START( link_writemem, ADDRESS_SPACE_PROGRAM, 8 )
-ADDRESS_MAP_END
+static PORT_READ_START(qsound_readport)
+	{ 0x00, 0x00, soundlatch_r },
+MEMORY_END
 
-static ADDRESS_MAP_START( fx1a_sound_readmem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0x3fff) AM_READ(MRA8_ROM)
-	AM_RANGE(0x4000, 0x7fff) AM_READ(MRA8_BANK10)
-	AM_RANGE(0xc000, 0xdfff) AM_READ(MRA8_RAM)
-	AM_RANGE(0xe000, 0xe000) AM_READ(YM2610_status_port_0_A_r)
-	AM_RANGE(0xe001, 0xe001) AM_READ(YM2610_read_port_0_r)
-	AM_RANGE(0xe002, 0xe002) AM_READ(YM2610_status_port_0_B_r)
-	AM_RANGE(0xe200, 0xe200) AM_READ(MRA8_NOP)
-	AM_RANGE(0xe201, 0xe201) AM_READ(taitosound_slave_comm_r)
-	AM_RANGE(0xea00, 0xea00) AM_READ(MRA8_NOP)
-ADDRESS_MAP_END
+static MEMORY_READ_START( link_readmem )
+MEMORY_END
 
-static ADDRESS_MAP_START( fx1a_sound_writemem, ADDRESS_SPACE_PROGRAM, 8 )
-	AM_RANGE(0x0000, 0x7fff) AM_WRITE(MWA8_ROM)
-	AM_RANGE(0xc000, 0xdfff) AM_WRITE(MWA8_RAM)
-	AM_RANGE(0xe000, 0xe000) AM_WRITE(YM2610_control_port_0_A_w)
-	AM_RANGE(0xe001, 0xe001) AM_WRITE(YM2610_data_port_0_A_w)
-	AM_RANGE(0xe002, 0xe002) AM_WRITE(YM2610_control_port_0_B_w)
-	AM_RANGE(0xe003, 0xe003) AM_WRITE(YM2610_data_port_0_B_w)
-	AM_RANGE(0xe200, 0xe200) AM_WRITE(taitosound_slave_port_w)
-	AM_RANGE(0xe201, 0xe201) AM_WRITE(taitosound_slave_comm_w)
-	AM_RANGE(0xe400, 0xe403) AM_WRITE(MWA8_NOP) /* pan */
-	AM_RANGE(0xee00, 0xee00) AM_WRITE(MWA8_NOP) /* ? */
-	AM_RANGE(0xf000, 0xf000) AM_WRITE(MWA8_NOP) /* ? */
-	AM_RANGE(0xf200, 0xf200) AM_WRITE(fx1a_sound_bankswitch_w)
-ADDRESS_MAP_END
+static MEMORY_WRITE_START( link_writemem )
+MEMORY_END
+
+static MEMORY_READ_START( fx1a_sound_readmem )
+	{ 0x0000, 0x3fff, MRA_ROM },
+	{ 0x4000, 0x7fff, MRA_BANK10 },
+	{ 0xc000, 0xdfff, MRA_RAM },
+	{ 0xe000, 0xe000, YM2610_status_port_0_A_r },
+	{ 0xe001, 0xe001, YM2610_read_port_0_r },
+	{ 0xe002, 0xe002, YM2610_status_port_0_B_r },
+	{ 0xe200, 0xe200, MRA_NOP },
+	{ 0xe201, 0xe201, taitosound_slave_comm_r },
+	{ 0xea00, 0xea00, MRA_NOP },
+MEMORY_END
+
+static MEMORY_WRITE_START( fx1a_sound_writemem )
+	{ 0x0000, 0x7fff, MWA_ROM },
+	{ 0xc000, 0xdfff, MWA_RAM },
+	{ 0xe000, 0xe000, YM2610_control_port_0_A_w },
+	{ 0xe001, 0xe001, YM2610_data_port_0_A_w },
+	{ 0xe002, 0xe002, YM2610_control_port_0_B_w },
+	{ 0xe003, 0xe003, YM2610_data_port_0_B_w },
+	{ 0xe200, 0xe200, taitosound_slave_port_w },
+	{ 0xe201, 0xe201, taitosound_slave_comm_w },
+	{ 0xe400, 0xe403, MWA_NOP }, /* pan */
+	{ 0xee00, 0xee00, MWA_NOP }, /* ? */
+	{ 0xf000, 0xf000, MWA_NOP }, /* ? */
+	{ 0xf200, 0xf200, fx1a_sound_bankswitch_w },
+MEMORY_END
 
 static void init_znsec( void )
 {
@@ -769,13 +779,13 @@ MACHINE_INIT( coh1000c )
 static MACHINE_DRIVER_START( coh1000c )
 	/* basic machine hardware */
 	MDRV_CPU_ADD( PSXCPU, 33868800 / 2 ) /* 33MHz ?? */
-	MDRV_CPU_PROGRAM_MAP( zn_map, 0 )
+	MDRV_CPU_MEMORY(zn_readmem,zn_writemem)
 	MDRV_CPU_VBLANK_INT(psx_vblank,1)
 
 	MDRV_CPU_ADD( Z80, 8000000 )
 	MDRV_CPU_FLAGS( CPU_AUDIO_CPU )  /* 8MHz ?? */
-	MDRV_CPU_PROGRAM_MAP( qsound_readmem, qsound_writemem )
-	MDRV_CPU_IO_MAP( qsound_readport, 0 )
+	MDRV_CPU_MEMORY(zn_readmem,zn_writemem)
+	MDRV_CPU_PORTS( qsound_readport, 0 )
 	MDRV_CPU_VBLANK_INT( qsound_interrupt, 4 ) /* 4 interrupts per frame ?? */
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -809,13 +819,13 @@ MACHINE_DRIVER_END
 static MACHINE_DRIVER_START( coh1002c )
 	/* basic machine hardware */
 	MDRV_CPU_ADD( PSXCPU, 33868800 / 2 ) /* 33MHz ?? */
-	MDRV_CPU_PROGRAM_MAP( zn_map, 0 )
+	MDRV_CPU_MEMORY(zn_readmem,zn_writemem)
 	MDRV_CPU_VBLANK_INT( psx_vblank, 1 )
 
 	MDRV_CPU_ADD( Z80, 8000000 )
 	MDRV_CPU_FLAGS( CPU_AUDIO_CPU )  /* 8MHz ?? */
-	MDRV_CPU_PROGRAM_MAP( qsound_readmem, qsound_writemem )
-	MDRV_CPU_IO_MAP( qsound_readport, 0 )
+	MDRV_CPU_MEMORY(zn_readmem,zn_writemem)
+	MDRV_CPU_PORTS( qsound_readport, 0 )
 	MDRV_CPU_VBLANK_INT( qsound_interrupt, 4 ) /* 4 interrupts per frame ?? */
 
 	MDRV_FRAMES_PER_SECOND( 60 )
@@ -917,12 +927,12 @@ static NVRAM_HANDLER( coh1000t )
 static MACHINE_DRIVER_START( coh1000ta )
 	/* basic machine hardware */
 	MDRV_CPU_ADD( PSXCPU, 33868800 / 2 ) /* 33MHz ?? */
-	MDRV_CPU_PROGRAM_MAP( zn_map, 0 )
+	MDRV_CPU_MEMORY(zn_readmem,zn_writemem)
 	MDRV_CPU_VBLANK_INT( psx_vblank, 1 )
 
 	MDRV_CPU_ADD( Z80, 16000000 / 4 )
 	MDRV_CPU_FLAGS( CPU_AUDIO_CPU )	/* 4 MHz */
-	MDRV_CPU_PROGRAM_MAP( fx1a_sound_readmem, fx1a_sound_writemem )
+	MDRV_CPU_MEMORY( fx1a_sound_readmem, fx1a_sound_writemem )
 	MDRV_CPU_VBLANK_INT( fx1a_sound_interrupt, 1 ) /* 4 interrupts per frame ?? */
 
 	MDRV_FRAMES_PER_SECOND( 60 )
@@ -969,7 +979,7 @@ INTERRUPT_GEN( coh1000tb_vblank )
 static MACHINE_DRIVER_START( coh1000tb )
 	/* basic machine hardware */
 	MDRV_CPU_ADD( PSXCPU, 33868800 / 2 ) /* 33MHz ?? */
-	MDRV_CPU_PROGRAM_MAP( zn_map, 0 )
+	MDRV_CPU_MEMORY(zn_readmem,zn_writemem)
 	MDRV_CPU_VBLANK_INT( coh1000tb_vblank, 1 )
 
 	MDRV_FRAMES_PER_SECOND( 60 )
@@ -1031,13 +1041,13 @@ MACHINE_INIT( coh3002c )
 static MACHINE_DRIVER_START( coh3002c )
 	/* basic machine hardware */
 	MDRV_CPU_ADD( PSXCPU, 33868800 / 2 ) /* 33MHz ?? */
-	MDRV_CPU_PROGRAM_MAP( zn_map, 0 )
+	MDRV_CPU_MEMORY(zn_readmem,zn_writemem)
 	MDRV_CPU_VBLANK_INT(psx_vblank,1)
 
 	MDRV_CPU_ADD(Z80, 8000000)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)  /* 8MHz ?? */
-	MDRV_CPU_PROGRAM_MAP( qsound_readmem, qsound_writemem )
-	MDRV_CPU_IO_MAP( qsound_readport, 0 )
+	MDRV_CPU_MEMORY(zn_readmem,zn_writemem)
+	MDRV_CPU_PORTS( qsound_readport, 0 )
 	MDRV_CPU_VBLANK_INT(qsound_interrupt,4) /* 4 interrupts per frame ?? */
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -1146,7 +1156,7 @@ MACHINE_INIT( coh1000w )
 static MACHINE_DRIVER_START( coh1000w )
 	/* basic machine hardware */
 	MDRV_CPU_ADD( PSXCPU, 33868800 / 2 ) /* 33MHz ?? */
-	MDRV_CPU_PROGRAM_MAP( zn_map, 0 )
+	MDRV_CPU_MEMORY(zn_readmem,zn_writemem)
 	MDRV_CPU_VBLANK_INT(psx_vblank,1)
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -1227,14 +1237,30 @@ static READ16_HANDLER( psarc_latch_r )
 	return soundlatch_r(0);
 }
 
+static MEMORY_READ16_START(psarc_snd_read)
+	{ 0x000000, 0x07ffff, MRA16_ROM },
+	{ 0x080000, 0x0fffff, MRA16_RAM },
+	{ 0x100000, 0x10001f, psarc_ymf_r },
+	{ 0x180008, 0x180009, psarc_latch_r },
+MEMORY_END
+/*
 static ADDRESS_MAP_START( psarc_snd_map, ADDRESS_SPACE_PROGRAM, 16 )
-	AM_RANGE(0x000000, 0x07ffff) AM_ROM
-	AM_RANGE(0x080000, 0x0fffff) AM_RAM
-	AM_RANGE(0x100000, 0x10001f) AM_READWRITE( psarc_ymf_r, psarc_ymf_w )
-	AM_RANGE(0x180008, 0x180009) AM_READ( psarc_latch_r )
-	AM_RANGE(0x000000, 0x07ffff) AM_WRITENOP
-	AM_RANGE(0x100020, 0xffffff) AM_WRITENOP
+	{ 0x000000, 0x07ffff) AM_ROM
+	{ 0x080000, 0x0fffff) AM_RAM
+	{ 0x100000, 0x10001f) AM_READWRITE( psarc_ymf_r, psarc_ymf_w )
+	{ 0x180008, 0x180009) AM_READ( psarc_latch_r )
+	{ 0x000000, 0x07ffff) AM_WRITENOP
+	{ 0x100020, 0xffffff) AM_WRITENOP
 ADDRESS_MAP_END
+*/
+
+static MEMORY_WRITE16_START(psarc_snd_write)
+	{ 0x000000, 0x07ffff, MWA16_ROM },
+	{ 0x080000, 0x0fffff, MWA16_RAM },
+	{ 0x100000, 0x10001f, psarc_ymf_w }, 
+	{ 0x000000, 0x07ffff, MWA16_NOP },
+	{ 0x100020, 0xffffff, MWA16_NOP },
+MEMORY_END
 
 static struct YMF271interface ymf271_interface =
 {
@@ -1246,12 +1272,12 @@ static struct YMF271interface ymf271_interface =
 static MACHINE_DRIVER_START( coh1002e )
 	/* basic machine hardware */
 	MDRV_CPU_ADD( PSXCPU, 33868800 / 2 ) /* 33MHz ?? */
-	MDRV_CPU_PROGRAM_MAP( zn_map, 0 )
+	MDRV_CPU_MEMORY(zn_readmem,zn_writemem)
 	MDRV_CPU_VBLANK_INT(psx_vblank,1)
 
 	MDRV_CPU_ADD( M68000, 8000000 )
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)
-	MDRV_CPU_PROGRAM_MAP( psarc_snd_map, 0 )
+	MDRV_CPU_MEMORY( psarc_snd_read, psarc_snd_write )
 
 	MDRV_FRAMES_PER_SECOND(60)
 	MDRV_VBLANK_DURATION(0)
@@ -1430,7 +1456,7 @@ MACHINE_INIT( coh1000a )
 static MACHINE_DRIVER_START( coh1000a )
 	/* basic machine hardware */
 	MDRV_CPU_ADD( PSXCPU, 33868800 / 2 ) /* 33MHz ?? */
-	MDRV_CPU_PROGRAM_MAP( zn_map, 0 )
+	MDRV_CPU_MEMORY(zn_readmem,zn_writemem)
 	MDRV_CPU_VBLANK_INT( psx_vblank, 1 )
 
 	MDRV_FRAMES_PER_SECOND( 60 )
@@ -1476,7 +1502,7 @@ MACHINE_INIT( coh1002v )
 static MACHINE_DRIVER_START( coh1002v )
 	/* basic machine hardware */
 	MDRV_CPU_ADD( PSXCPU, 33868800 / 2 ) /* 33MHz ?? */
-	MDRV_CPU_PROGRAM_MAP( zn_map, 0 )
+	MDRV_CPU_MEMORY(zn_readmem,zn_writemem)
 	MDRV_CPU_VBLANK_INT(psx_vblank,1)
 
 	MDRV_FRAMES_PER_SECOND(60)
@@ -1522,7 +1548,7 @@ MACHINE_INIT( coh3002t )
 static MACHINE_DRIVER_START( coh3002t )
 	/* basic machine hardware */
 	MDRV_CPU_ADD( PSXCPU, 33868800 / 2 ) /* 33MHz ?? */
-	MDRV_CPU_PROGRAM_MAP( zn_map, 0 )
+	MDRV_CPU_MEMORY(zn_readmem,zn_writemem)
 	MDRV_CPU_VBLANK_INT( psx_vblank, 1 )
 
 	MDRV_FRAMES_PER_SECOND( 60 )
@@ -1618,17 +1644,22 @@ static READ_HANDLER( cbaj_z80_ready_r )
 	return ret;
 }
 
+
+/*
 ADDRESS_MAP_START( cbaj_z80_map, ADDRESS_SPACE_PROGRAM, 8 )
 	AM_RANGE( 0x0000, 0x7fff ) AM_ROM
 	AM_RANGE( 0x8000, 0xffff ) AM_RAM
 ADDRESS_MAP_END
+*/
 
+/*
 ADDRESS_MAP_START( cbaj_z80_port_map, ADDRESS_SPACE_IO, 8)
 	AM_RANGE( 0x84, 0x84 ) AM_READWRITE( YMZ280B_status_0_r, YMZ280B_register_0_w )
 	AM_RANGE( 0x85, 0x85 ) AM_READWRITE( YMZ280B_status_0_r, YMZ280B_data_0_w )
 	AM_RANGE( 0x90, 0x90 ) AM_READWRITE( cbaj_z80_latch_r, cbaj_z80_latch_w )
 	AM_RANGE( 0x91, 0x91 ) AM_READ( cbaj_z80_ready_r )
 ADDRESS_MAP_END
+*/
 
 static struct YMZ280Binterface ymz280b_intf =
 {
@@ -1642,7 +1673,7 @@ static struct YMZ280Binterface ymz280b_intf =
 static MACHINE_DRIVER_START( coh1002m )
 	/* basic machine hardware */
 	MDRV_CPU_ADD( PSXCPU, 33868800 / 2 ) /* 33MHz ?? */
-	MDRV_CPU_PROGRAM_MAP( zn_map, 0 )
+	MDRV_CPU_MEMORY(zn_readmem,zn_writemem)
 	MDRV_CPU_VBLANK_INT( psx_vblank, 1 )
 
 	MDRV_FRAMES_PER_SECOND( 60 )
@@ -1675,7 +1706,7 @@ MACHINE_DRIVER_END
 static MACHINE_DRIVER_START( coh1002msnd )
 	/* basic machine hardware */
 	MDRV_CPU_ADD( PSXCPU, 33868800 / 2 ) /* 33MHz ?? */
-	MDRV_CPU_PROGRAM_MAP( zn_map, 0 )
+	MDRV_CPU_MEMORY(zn_readmem,zn_writemem)
 	MDRV_CPU_VBLANK_INT( psx_vblank, 1 )
 
 	MDRV_CPU_ADD( Z80, 8000000 )
@@ -1714,7 +1745,7 @@ MACHINE_DRIVER_END
 static MACHINE_DRIVER_START( coh1002ml )
 	/* basic machine hardware */
 	MDRV_CPU_ADD( PSXCPU, 33868800 / 2 ) /* 33MHz ?? */
-	MDRV_CPU_PROGRAM_MAP( zn_map, 0 )
+	MDRV_CPU_MEMORY(zn_readmem,zn_writemem)
 	MDRV_CPU_VBLANK_INT( psx_vblank, 1 )
 
 	MDRV_CPU_ADD( Z80, 8000000 )
