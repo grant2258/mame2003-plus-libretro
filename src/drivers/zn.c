@@ -384,52 +384,112 @@ static WRITE32_HANDLER( zn_qsound_w )
 }
 
 static MEMORY_READ32_START( zn_readmem )
+//	{ 0x00000000, 0x003fffff, MRA32_BANK11 }, // ram
+//	{ 0x00400000, 0x007fffff, MRA32_BANK11 }, // ram mirror
+//	{ 0x1f800000, 0x1f8003ff, MRA32_RAM }, // scratchpad
+//	{ 0x1f801008, 0x1f80100b, MRA32_RAM }, // ??
+//	{ 0x1f80100c, 0x1f80100f, MRA32_NOP },
+//	{ 0x1f801010, 0x1f801013, MRA32_NOP },
+//	{ 0x1f801014, 0x1f801017, psx_spu_delay_r },
+//	{ 0x1f801020, 0x1f801023, psx_com_delay_r },
+//	{ 0x1f801040, 0x1f80105f, psx_sio_r },
+//	{ 0x1f801060, 0x1f80106f, MRA32_RAM },
+//	{ 0x1f801070, 0x1f801077, psx_irq_r },
+//	{ 0x1f801080, 0x1f8010ff, psx_dma_r },
+//	{ 0x1f801100, 0x1f80113f, psx_counter_r },
+//	{ 0x1f801810, 0x1f801817, psx_gpu_r },
+//	{ 0x1f801820, 0x1f801827, psx_mdec_r },
+//	{ 0x1f801c00, 0x1f801dff, psx_spu_r },
+//	{ 0x1f802020, 0x1f802033, MRA32_RAM }, // ??
+//	{ 0x1f802040, 0x1f802043, MRA32_NOP },
+//	{ 0x1fa00000, 0x1fa00003, jamma_0_r },
+//	{ 0x1fa00100, 0x1fa00103, jamma_1_r },
+//	{ 0x1fa00200, 0x1fa00203, jamma_2_r },
+//	{ 0x1fa00300, 0x1fa00303, jamma_3_r },
+//	{ 0x1fa10000, 0x1fa10003, jamma_4_r },
+//	{ 0x1fa10100, 0x1fa10103, jamma_5_r },
+//	{ 0x1fa10200, 0x1fa10203, jamma_6_r },
+//	{ 0x1fa10300, 0x1fa10303, znsecsel_r },
+//	{ 0x1faf0000, 0x1faf07ff, MRA32_RAM, },  
+//	{ 0x1fb20000, 0x1fb20007, unknown_r },
+//	{ 0x1fc00000, 0x1fc7ffff, MRA32_BANK12 },//AM_ROM AM_SHARE(2) AM_REGION(REGION_USER1, 0) // bios  },
+//	{ 0x80000000, 0x803fffff, MRA32_BANK11 },// ram mirror
+//	{ 0x80400000, 0x807fffff, MRA32_BANK11 },// ram mirror 
+//	{ 0x9fc00000, 0x9fc7ffff, MRA32_BANK12 },// bios mirror  },
+//	{ 0xa0000000, 0xa03fffff, MRA32_BANK11 },// ram mirror },
+//	{ 0xbfc00000, 0xbfc7ffff, MRA32_BANK12 },// bios mirror
 MEMORY_END
 
 
 /*
 static ADDRESS_MAP_START( zn_map, ADDRESS_SPACE_PROGRAM, 32 )
-	{ 0x00000000, 0x003fffff, AM_RAM	AM_SHARE(1) AM_BASE(&g_p_n_psxram) AM_SIZE(&g_n_psxramsize) // ram
-	{ 0x00400000, 0x007fffff, AM_RAM AM_SHARE(1) // ram mirror
-	{ 0x1f800000, 0x1f8003ff, AM_RAM // scratchpad
-	{ 0x1f801000, 0x1f801007, AM_WRITENOP
-	{ 0x1f801008, 0x1f80100b, AM_RAM // ??
-	{ 0x1f80100c, 0x1f80100f, AM_NOP
-	{ 0x1f801010, 0x1f80102f, AM_WRITENOP
-	{ 0x1f801010, 0x1f801013, AM_READNOP
-	{ 0x1f801014, 0x1f801017, AM_READ(psx_spu_delay_r)
-	{ 0x1f801020, 0x1f801023, AM_READ(psx_com_delay_r)
-	{ 0x1f801040, 0x1f80105f, AM_READWRITE(psx_sio_r, psx_sio_w)
-	{ 0x1f801060, 0x1f80106f, AM_RAM
-	{ 0x1f801070, 0x1f801077, AM_READWRITE(psx_irq_r, psx_irq_w)
-	{ 0x1f801080, 0x1f8010ff, AM_READWRITE(psx_dma_r, psx_dma_w)
-	{ 0x1f801100, 0x1f80113f, AM_READWRITE(psx_counter_r, psx_counter_w)
-	{ 0x1f801810, 0x1f801817, AM_READWRITE(psx_gpu_r, psx_gpu_w)
-	{ 0x1f801820, 0x1f801827, AM_READWRITE(psx_mdec_r, psx_mdec_w)
-	{ 0x1f801c00, 0x1f801dff, AM_READWRITE(psx_spu_r, psx_spu_w)
-	{ 0x1f802020, 0x1f802033, AM_RAM // ??
-	{ 0x1f802040, 0x1f802043, AM_WRITENOP
-	{ 0x1fa00000, 0x1fa00003, AM_READ(jamma_0_r)
-	{ 0x1fa00100, 0x1fa00103, AM_READ(jamma_1_r)
-	{ 0x1fa00200, 0x1fa00203, AM_READ(jamma_2_r)
-	{ 0x1fa00300, 0x1fa00303, AM_READ(jamma_3_r)
-	{ 0x1fa10000, 0x1fa10003, AM_READ(jamma_4_r)
-	{ 0x1fa10100, 0x1fa10103, AM_READ(jamma_5_r)
-	{ 0x1fa10200, 0x1fa10203, AM_READ(jamma_6_r)
-	{ 0x1fa10300, 0x1fa10303, AM_READWRITE(znsecsel_r, znsecsel_w)
-	{ 0x1faf0000, 0x1faf07ff, AM_RAM AM_BASE((data32_t **)&generic_nvram) AM_SIZE(&generic_nvram_size) // eeprom
-	{ 0x1fb20000, 0x1fb20007, AM_READ(unknown_r)
-	{ 0x1fc00000, 0x1fc7ffff, AM_ROM AM_SHARE(2) AM_REGION(REGION_USER1, 0) // bios
-	{ 0x80000000, 0x803fffff, AM_RAM AM_SHARE(1) // ram mirror
-	{ 0x80400000, 0x807fffff, AM_RAM AM_SHARE(1) // ram mirror
-	{ 0x9fc00000, 0x9fc7ffff, AM_ROM AM_SHARE(2) // bios mirror
-	{ 0xa0000000, 0xa03fffff, AM_RAM AM_SHARE(1) // ram mirror
-	{ 0xbfc00000, 0xbfc7ffff, AM_WRITENOP AM_ROM AM_SHARE(2) // bios mirror
-	{ 0xfffe0130, 0xfffe0133, AM_WRITENOP
+	{ 0x00000000, 0x003fffff, AM_RAM	AM_SHARE(1) AM_BASE(&g_p_n_psxram) AM_SIZE(&g_n_psxramsize) }, // ram
+	{ 0x00400000, 0x007fffff, AM_RAM AM_SHARE(1) }, // ram mirror
+	{ 0x1f800000, 0x1f8003ff, AM_RAM }, // scratchpad
+	{ 0x1f801000, 0x1f801007, AM_WRITENOP  },
+	{ 0x1f801008, 0x1f80100b, AM_RAM }, // ??
+	{ 0x1f80100c, 0x1f80100f, AM_NOP },
+	{ 0x1f801010, 0x1f80102f, AM_WRITENOP },
+	{ 0x1f801010, 0x1f801013, AM_READNOP },
+	{ 0x1f801014, 0x1f801017, AM_READ(psx_spu_delay_r) },
+	{ 0x1f801020, 0x1f801023, AM_READ(psx_com_delay_r) },
+	{ 0x1f801040, 0x1f80105f, AM_READWRITE(psx_sio_r, psx_sio_w) },
+	{ 0x1f801060, 0x1f80106f, AM_RAM },
+	{ 0x1f801070, 0x1f801077, AM_READWRITE(psx_irq_r, psx_irq_w) },
+	{ 0x1f801080, 0x1f8010ff, AM_READWRITE(psx_dma_r, psx_dma_w) },
+	{ 0x1f801100, 0x1f80113f, AM_READWRITE(psx_counter_r, psx_counter_w) },
+	{ 0x1f801810, 0x1f801817, AM_READWRITE(psx_gpu_r, psx_gpu_w) },
+	{ 0x1f801820, 0x1f801827, AM_READWRITE(psx_mdec_r, psx_mdec_w) },
+	{ 0x1f801c00, 0x1f801dff, AM_READWRITE(psx_spu_r, psx_spu_w) },
+	{ 0x1f802020, 0x1f802033, AM_RAM }, // ??
+	{ 0x1f802040, 0x1f802043, AM_WRITENOP },
+	{ 0x1fa00000, 0x1fa00003, AM_READ(jamma_0_r) },
+	{ 0x1fa00100, 0x1fa00103, AM_READ(jamma_1_r) },
+	{ 0x1fa00200, 0x1fa00203, AM_READ(jamma_2_r) },
+	{ 0x1fa00300, 0x1fa00303, AM_READ(jamma_3_r) },
+	{ 0x1fa10000, 0x1fa10003, AM_READ(jamma_4_r) },
+	{ 0x1fa10100, 0x1fa10103, AM_READ(jamma_5_r) },
+	{ 0x1fa10200, 0x1fa10203, AM_READ(jamma_6_r) },
+	{ 0x1fa10300, 0x1fa10303, AM_READWRITE(znsecsel_r, znsecsel_w) },
+	{ 0x1faf0000, 0x1faf07ff, AM_RAM AM_BASE((data32_t **)&generic_nvram) AM_SIZE(&generic_nvram_size) // eeprom  },
+	{ 0x1fb20000, 0x1fb20007, AM_READ(unknown_r) },
+	{ 0x1fc00000, 0x1fc7ffff, AM_ROM AM_SHARE(2) AM_REGION(REGION_USER1, 0) // bios  },
+	{ 0x80000000, 0x803fffff, AM_RAM AM_SHARE(1) // ram mirror  },
+	{ 0x80400000, 0x807fffff, AM_RAM AM_SHARE(1) // ram mirror },
+	{ 0x9fc00000, 0x9fc7ffff, AM_ROM AM_SHARE(2) // bios mirror  },
+	{ 0xa0000000, 0xa03fffff, AM_RAM AM_SHARE(1) // ram mirror },
+	{ 0xbfc00000, 0xbfc7ffff, AM_WRITENOP AM_ROM AM_SHARE(2)  },// bios mirror
+	{ 0xfffe0130, 0xfffe0133, AM_WRITENOP  },
 ADDRESS_MAP_END
 */
 
 static MEMORY_WRITE32_START( zn_writemem )
+//	{ 0x00400000, 0x007fffff, MWA32_BANK11, &g_p_n_psxram, &g_n_psxramsize }, // ram mirror think ill need to allocate this and bank 12
+//	{ 0x00000000, 0x003fffff, MWA32_BANK11,  }, // ram
+//	{ 0x1f800000, 0x1f8003ff, MWA32_RAM }, // scratchpad
+//	{ 0x1f801000, 0x1f801007, MWA32_NOP  },
+//	{ 0x1f801008, 0x1f80100b, MWA32_RAM }, // ??
+//	{ 0x1f80100c, 0x1f80100f, MWA32_NOP },
+//	{ 0x1f801010, 0x1f80102f, MWA32_NOP },
+//	{ 0x1f801040, 0x1f80105f, psx_sio_w },
+//	{ 0x1f801060, 0x1f80106f, MWA32_RAM },
+//	{ 0x1f801070, 0x1f801077, psx_irq_w },
+//	{ 0x1f801080, 0x1f8010ff, psx_dma_w },
+//	{ 0x1f801100, 0x1f80113f, psx_counter_w },
+//	{ 0x1f801810, 0x1f801817, psx_gpu_w },
+//	{ 0x1f801820, 0x1f801827, psx_mdec_w },
+//	{ 0x1f801c00, 0x1f801dff, psx_spu_w },
+//	{ 0x1f802020, 0x1f802033, MWA32_RAM }, // ??
+//	{ 0x1f802040, 0x1f802043, MWA32_NOP },
+//	{ 0x1fa10300, 0x1fa10303, znsecsel_w },
+//	{ 0x1faf0000, 0x1faf07ff, MWA32_RAM, (data32_t **)&generic_nvram, &generic_nvram_size }, // eeprom 
+//	{ 0x1fc00000, 0x1fc7ffff, MWA32_BANK12 }, //AM_ROM AM_SHARE(2) AM_REGION(REGION_USER1, 0) // bios  },
+//	{ 0x80000000, 0x803fffff, MWA32_BANK11 }, // ram mirror  },
+//	{ 0x80400000, 0x807fffff, MWA32_BANK11 }, // ram mirror },
+//	{ 0x9fc00000, 0x9fc7ffff, MWA32_BANK12 }, // bios mirror  },
+//	{ 0xa0000000, 0xa03fffff, MWA32_BANK11 }, // ram mirror },
+//	{ 0xbfc00000, 0xbfc7ffff, MWA32_NOP },// bios mirror
+//	{ 0xfffe0130, 0xfffe0133, MWA32_NOP },
 MEMORY_END
 
 
@@ -784,7 +844,7 @@ static MACHINE_DRIVER_START( coh1000c )
 
 	MDRV_CPU_ADD( Z80, 8000000 )
 	MDRV_CPU_FLAGS( CPU_AUDIO_CPU )  /* 8MHz ?? */
-	MDRV_CPU_MEMORY(zn_readmem,zn_writemem)
+	MDRV_CPU_MEMORY(qsound_readmem, qsound_writemem)
 	MDRV_CPU_PORTS( qsound_readport, 0 )
 	MDRV_CPU_VBLANK_INT( qsound_interrupt, 4 ) /* 4 interrupts per frame ?? */
 
@@ -824,7 +884,7 @@ static MACHINE_DRIVER_START( coh1002c )
 
 	MDRV_CPU_ADD( Z80, 8000000 )
 	MDRV_CPU_FLAGS( CPU_AUDIO_CPU )  /* 8MHz ?? */
-	MDRV_CPU_MEMORY(zn_readmem,zn_writemem)
+	MDRV_CPU_MEMORY(qsound_readmem, qsound_writemem)
 	MDRV_CPU_PORTS( qsound_readport, 0 )
 	MDRV_CPU_VBLANK_INT( qsound_interrupt, 4 ) /* 4 interrupts per frame ?? */
 
@@ -904,6 +964,7 @@ MACHINE_INIT( coh1000t )
 {
 	cpu_setbank( 1, memory_region( REGION_USER2 ) ); /* banked game rom */
 	cpu_setbank( 2, taitofx1_eeprom );
+	cpu_setbank( 12, memory_region( REGION_USER1 ) ); /* bios */
 	zn_machine_init();
 	player_init();
 }
@@ -1046,7 +1107,7 @@ static MACHINE_DRIVER_START( coh3002c )
 
 	MDRV_CPU_ADD(Z80, 8000000)
 	MDRV_CPU_FLAGS(CPU_AUDIO_CPU)  /* 8MHz ?? */
-	MDRV_CPU_MEMORY(zn_readmem,zn_writemem)
+	MDRV_CPU_MEMORY(qsound_readmem, qsound_writemem)
 	MDRV_CPU_PORTS( qsound_readport, 0 )
 	MDRV_CPU_VBLANK_INT(qsound_interrupt,4) /* 4 interrupts per frame ?? */
 
@@ -2937,7 +2998,7 @@ GAMEX( 1995, psyfrcex, taitofx1, coh1000ta, zn, coh1000t, ROT0, "Taito", "Psychi
 GAMEX( 1995, psyforce, psyfrcex, coh1000ta, zn, coh1000t, ROT0, "Taito", "Psychic Force (JAPAN)", GAME_UNEMULATED_PROTECTION | GAME_NOT_WORKING )
 GAMEX( 1996, mgcldate, taitofx1, coh1000ta, zn, coh1000t, ROT0, "Taito", "Magical Date (JAPAN) set 1", GAME_UNEMULATED_PROTECTION | GAME_NOT_WORKING )
 GAMEX( 1996, mgcldtea, mgcldate, coh1000ta, zn, coh1000t, ROT0, "Taito", "Magical Date (JAPAN) set 2", GAME_UNEMULATED_PROTECTION | GAME_NOT_WORKING )
-GAMEX( 1996, raystorm, taitofx1, coh1000tb,zn, coh1000t, ROT0, "Taito", "Ray Storm (JAPAN)", GAME_IMPERFECT_GRAPHICS | GAME_IMPERFECT_SOUND )
+GAMEX( 1996, raystorm, taitofx1, coh1000tb, zn, coh1000t, ROT0, "Taito", "Ray Storm (JAPAN)", GAME_IMPERFECT_GRAPHICS | GAME_IMPERFECT_SOUND )
 GAMEX( 1996, ftimpcta, taitofx1, coh1000tb, zn, coh1000t, ROT0, "Taito", "Fighter's Impact Ace (JAPAN)", GAME_UNEMULATED_PROTECTION | GAME_NO_SOUND | GAME_NOT_WORKING )
 GAMEX( 1997, gdarius,  taitofx1, coh1000tb, zn, coh1000t, ROT0, "Taito", "G-Darius (JAPAN)", GAME_UNEMULATED_PROTECTION | GAME_NO_SOUND | GAME_NOT_WORKING )
 GAMEX( 1997, gdarius2, gdarius,  coh1000tb, zn, coh1000t, ROT0, "Taito", "G-Darius Ver.2 (JAPAN)", GAME_UNEMULATED_PROTECTION | GAME_NO_SOUND | GAME_NOT_WORKING )
