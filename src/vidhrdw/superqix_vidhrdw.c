@@ -16,7 +16,7 @@ static int gfxbank;
 static struct mame_bitmap *bitmap1,*bitmap2;
 static struct tilemap *bg_tilemap;
 
-data8_t p_ram[0x1ff];
+data8_t p_ram[0x200];
 data8_t sq_bitmap_1[0xffff];// put the right size in at some point
 data8_t sq_bitmap_2[0xffff];// put the right size in at some point 
 

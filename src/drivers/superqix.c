@@ -386,7 +386,7 @@ static PORT_READ_START( pbillian_readport )
 PORT_END
 
 static PORT_WRITE_START( pbillian_writeport )
-    { 0x0000, 0x01ff, paletteram_BBGGRRII_w, &paletteram },
+    { 0x0000, 0x01ff, paletteram_BBGGRRII_w },
 	{ 0x0402, 0x0402, AY8910_write_port_0_w },
 	{ 0x0403, 0x0403, AY8910_control_port_0_w },
 	{ 0x0408, 0x0408, pbillian_z80_mcu_w },
@@ -404,7 +404,7 @@ static PORT_READ_START( hotsmash_readport )
 PORT_END
 
 static PORT_WRITE_START( hotsmash_writeport )
-    { 0x0000, 0x01ff, paletteram_BBGGRRII_w, &paletteram },
+    { 0x0000, 0x01ff, paletteram_BBGGRRII_w },
 	{ 0x0402, 0x0402, AY8910_write_port_0_w },
 	{ 0x0403, 0x0403, AY8910_control_port_0_w },
 	{ 0x0408, 0x0408, hotsmash_z80_mcu_w },
@@ -423,7 +423,7 @@ static PORT_READ_START( sqix_readport )
 PORT_END
 
 static PORT_WRITE_START( sqix_writeport )
-    { 0x0000, 0x00ff, paletteram_BBGGRRII_w, &paletteram },
+    { 0x0000, 0x00ff, paletteram_BBGGRRII_w },
 	{ 0x0402, 0x0402, AY8910_write_port_0_w },
 	{ 0x0403, 0x0403, AY8910_control_port_0_w },
 	{ 0x0406, 0x0406, AY8910_write_port_1_w },
