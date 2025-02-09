@@ -430,8 +430,8 @@ static PORT_WRITE_START( sqix_writeport )
 	{ 0x0407, 0x0407, AY8910_control_port_1_w },
 	{ 0x0408, 0x0408, sqix_flipscreen_w },
 	{ 0x0410, 0x0410, superqix_0410_w },	/* ROM bank, NMI enable, tile bank */
-	{ 0x0800, 0x77ff, superqix_bitmapram_w, &superqix_bitmapram },
-	{ 0x8800, 0xf7ff, superqix_bitmapram2_w, &superqix_bitmapram2 },
+	{ 0x0800, 0x77ff, superqix_bitmapram_w}, 
+	{ 0x8800, 0xf7ff, superqix_bitmapram2_w },
 PORT_END
 
 static MEMORY_READ_START( m68705_readmem )

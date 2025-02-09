@@ -10,13 +10,19 @@
 #include "vidhrdw/generic.h"
 
 data8_t *superqix_videoram;
-data8_t *superqix_bitmapram,*superqix_bitmapram2;
 int pbillian_show_power;
 
 static int gfxbank;
 static struct mame_bitmap *bitmap1,*bitmap2;
 static struct tilemap *bg_tilemap;
 
+data8_t p_ram[0x1ff];
+data8_t sq_bitmap_1[0xffff];// put the right size in at some point
+data8_t sq_bitmap_2[0xffff];// put the right size in at some point 
+
+
+data8_t *superqix_bitmapram  = sq_bitmap_1;
+data8_t *superqix_bitmapram2 = sq_bitmap_2;
 
 /***************************************************************************
 
@@ -54,6 +60,7 @@ static void sqix_get_bg_tile_info(int tile_index)
 
 VIDEO_START( pbillian )
 {
+	paletteram = p_ram;
 	bg_tilemap = tilemap_create(pb_get_bg_tile_info, tilemap_scan_rows, TILEMAP_OPAQUE, 8, 8,32,32);
 
 	if (!bg_tilemap)
@@ -64,6 +71,7 @@ VIDEO_START( pbillian )
 
 VIDEO_START( superqix )
 {
+	paletteram = p_ram;
 	bitmap1 = auto_bitmap_alloc(256, 256);
 	bitmap2 = auto_bitmap_alloc(256, 256);
 	bg_tilemap = tilemap_create(sqix_get_bg_tile_info, tilemap_scan_rows, TILEMAP_SPLIT, 8, 8, 32, 32);
@@ -96,6 +104,7 @@ WRITE_HANDLER( superqix_videoram_w )
 
 WRITE_HANDLER( superqix_bitmapram_w )
 {
+	
 	if (superqix_bitmapram[offset] != data)
 	{
 		int x = 2 * (offset % 128);
@@ -105,7 +114,10 @@ WRITE_HANDLER( superqix_bitmapram_w )
 
 		plot_pixel(bitmap1, x,   y, Machine->pens[data >> 4]);
 		plot_pixel(bitmap1, x+1, y, Machine->pens[data & 0x0f]);
+
 	}
+
+superqix_bitmapram[offset]=data;
 }
 
 WRITE_HANDLER( superqix_bitmapram2_w )
@@ -120,6 +132,7 @@ WRITE_HANDLER( superqix_bitmapram2_w )
 		plot_pixel(bitmap2, x,   y, Machine->pens[data >> 4]);
 		plot_pixel(bitmap2, x+1, y, Machine->pens[data & 0x0f]);
 	}
+superqix_bitmapram2[offset]=data;
 }
 
 WRITE_HANDLER( pbillian_0410_w )
