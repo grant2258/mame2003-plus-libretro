@@ -3078,4 +3078,3 @@ static UINT8 TRANSP(HandleTransparencyNone)(struct tilemap *tilemap, UINT32 x0, 
 #undef PAL_INIT
 #undef PAL_GET
 #endif /* TRANSP*/
-

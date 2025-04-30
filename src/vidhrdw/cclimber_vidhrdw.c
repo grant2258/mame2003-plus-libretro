@@ -873,5 +873,3 @@ VIDEO_UPDATE( toprollr )
 
 		}
 }
-
-

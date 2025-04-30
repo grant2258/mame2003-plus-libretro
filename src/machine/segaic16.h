@@ -28,4 +28,3 @@ READ16_HANDLER( segaic16_compare_timer_0_r );
 READ16_HANDLER( segaic16_compare_timer_1_r );
 WRITE16_HANDLER( segaic16_compare_timer_0_w );
 WRITE16_HANDLER( segaic16_compare_timer_1_w );
-

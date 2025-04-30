@@ -652,4 +652,3 @@ void state_save_dump_registry(void)
 	}
 #endif
 }
-

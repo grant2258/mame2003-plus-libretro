@@ -381,4 +381,3 @@ VIDEO_UPDATE( firehawk )
 	tilemap_draw(bitmap,cliprect,tilemap_0,0,0);
 	afega_draw_sprites(bitmap,cliprect);
 }
-

@@ -12018,4 +12018,3 @@ GAMEX( 2001, progearjd,  progear,  cps2,     cps2_2p3b,  my_cps2,     ROT0,   "b
 GAMEX( 2001, progearjbl, progear,  cps2,     cps2_2p3b,  my_cps2,     ROT0,   "bootleg", "Progear no Arashi (Japan 010117) (decrypted bootleg)", GAME_IMPERFECT_GRAPHICS)  /* Not an actual phoenix set, but works as one */
 GAMEX( 2001, pzloop2jd,  pzloop2,  cps2,     pzloop2,    my_cps2,     ROT0,   "bootleg", "Puzz Loop 2 (Japan 010226 Phoenix Edition) (bootleg)", GAME_IMPERFECT_GRAPHICS)
 GAMEX( 2004, hsf2d,      hsf2,     cps2,     cps2_2p6b,  my_cps2,     ROT0,   "bootleg", "Hyper Street Fighter II: The Anniversary Edition (Asia 040202 Phoenix Edition) (bootleg)", GAME_IMPERFECT_GRAPHICS)
-

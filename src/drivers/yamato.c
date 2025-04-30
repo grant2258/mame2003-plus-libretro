@@ -754,4 +754,3 @@ static DRIVER_INIT( toprollr )
 GAME( 1983, yamato,   0,      yamato,   yamato,   yamato,   ROT90, "Sega", "Yamato (US)" )
 GAME( 1983, yamato2,  yamato, yamato,   yamato,   yamato,   ROT90, "Sega", "Yamato (World?)" )
 GAME(1983, toprollr, 0,      toprollr, toprollr, toprollr, ROT90, "Jaleco", "Top Roller" )
-

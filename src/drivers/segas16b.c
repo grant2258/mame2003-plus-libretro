@@ -2169,4 +2169,3 @@ GAME( 1990, aurailjd, aurail,   aurail,    aurail,    0,        ROT0,   "Sega / 
 GAME( 1991, cottond,  cotton,   cotton,    cotton,    0,        ROT0,   "Sega / Success",  "Cotton (set 4, World) (unprotected of FD1094 317-0181a set)" )
 GAME( 1991, dfjail,   0,        dfjail,    dfjail,    0,        ROT0,   "Philko",          "The Destroyer From Jail (Korea)" )
 GAME( 2008, fantzn2x, 0,        fantzn2x,  fantzn2x,  0,        ROT0,   "Sega / M2",       "Fantasy Zone II - The Tears of Opa-Opa (System 16C version)" )
-

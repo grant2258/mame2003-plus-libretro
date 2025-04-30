@@ -89,4 +89,3 @@ WRITE_HANDLER( llander_sounds_w )
 	discrete_sound_w(2,data&0x20);		/* Tone 6KHz enable */
 	discrete_sound_w(3,data&0x08);		/* Explosion */
 }
-

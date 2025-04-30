@@ -951,4 +951,3 @@ do {																					\
 #endif
 
 #endif	/* !_MEMORY_H */
-

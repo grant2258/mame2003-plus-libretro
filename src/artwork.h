@@ -177,4 +177,3 @@ void artwork_show(const char *tag, int show);
 mame_file *artwork_load_artwork_file(const struct GameDriver **driver);
 
 #endif /* ARTWORK_H */
-

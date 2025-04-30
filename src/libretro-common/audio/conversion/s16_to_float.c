@@ -202,4 +202,3 @@ void convert_s16_to_float(float *s,
 
 void convert_s16_to_float_init_simd(void) { }
 #endif
-

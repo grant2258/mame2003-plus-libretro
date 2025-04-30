@@ -129,5 +129,3 @@ void meadows_sh_dac_w(int data)
 	else
 		DAC_data_w(0, 0);
 }
-
-

@@ -405,6 +405,3 @@ VIDEO_UPDATE( guts )
 
 
 }
-
-
-

@@ -637,4 +637,3 @@ DRIVER_INIT( kickgoal )
 GAMEX( 1995, actionhw,0, actionhw, kickgoal, 0,         ROT0, "TCH", "Action Hollywood", GAME_IMPERFECT_SOUND )
 GAMEX( 1995, kickgoal,0, kickgoal, kickgoal, kickgoal,  ROT0, "TCH", "Kick Goal", GAME_NO_SOUND )
 GAMEX( 1995, topdrive,0, topdrive, topdrive, kickgoal,  ROT0, "Proyesel", "Top Driving (version 1.1)", GAME_IMPERFECT_SOUND )
-

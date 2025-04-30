@@ -291,4 +291,3 @@ VIDEO_UPDATE( superqix )
 	copybitmap(bitmap,bitmap2,flip_screen,flip_screen,0,0,cliprect,TRANSPARENCY_PEN,0);	/* not used? */
 	tilemap_draw(bitmap, cliprect, bg_tilemap, TILEMAP_FRONT, 0);
 }
-

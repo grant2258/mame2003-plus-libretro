@@ -696,5 +696,3 @@ GAME( 1983, marioe,  mario, mario, marioe,  0, ROT180, "Nintendo of America", "M
 GAME( 1983, mariof,  mario, mario, mariof,  0, ROT180, "Nintendo of America", "Mario Bros. (US, Revision F)" )
 GAME( 1983, marioj,  mario, mario, mariojp, 0, ROT180, "Nintendo", "Mario Bros. (Japan, Revision C)" )
 GAME( 1983, masao,   mario, masao, mario,   0, ROT180, "bootleg", "Masao" )
-
-

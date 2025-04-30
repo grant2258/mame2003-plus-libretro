@@ -805,4 +805,3 @@ static INLINE int cpu_gettotalcpu(void)
 #endif
 
 #endif	/* CPUINTRF_H */
-

@@ -229,4 +229,3 @@ READ_HANDLER( victnine_mcu_status_r )
 
 	return res;
 }
-

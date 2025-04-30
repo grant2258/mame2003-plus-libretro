@@ -1416,4 +1416,3 @@ GAME( 1995, deroon,      0,        deroon, deroon, deroon,     ROT0, "Tecmo", "D
 GAME( 1995, deroon2,     deroon,   deroon, deroon, deroon,     ROT0, "Tecmo", "Deroon DeroDero / Tecmo Stackers" )
 GAME( 1996, tkdensho,    0,        deroon, deroon, tkdensho,   ROT0, "Tecmo", "Toukidenshou - Angel Eyes (VER. 960614)" )
 GAME( 1996, tkdensha,    tkdensho, deroon, deroon, tkdensha,   ROT0, "Tecmo", "Toukidenshou - Angel Eyes (VER. 960427)" )
-

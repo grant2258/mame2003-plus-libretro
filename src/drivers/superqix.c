@@ -1044,4 +1044,3 @@ GAME( 1987, hotsmash, 0,        hotsmash, hotsmash, hotsmash, ROT90, "Taito", "V
 GAMEX(1987, superqix, 0,        sqix,     superqix, sqix,     ROT90, "Taito", "Super Qix (set 1)", GAME_NOT_WORKING )
 GAME( 1987, sqixbl,   superqix, sqix,     superqix, 0,        ROT90, "bootleg", "Super Qix (bootleg)" )
 GAME( 1994, perestro, 0,        sqix,     superqix, perestro, ROT90, "Promat", "Perestroika Girls" )
-

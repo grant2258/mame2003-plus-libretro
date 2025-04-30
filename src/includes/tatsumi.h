@@ -64,5 +64,3 @@ VIDEO_UPDATE( roundup5 );
 VIDEO_UPDATE( apache3 );
 VIDEO_UPDATE( bigfight );
 VIDEO_UPDATE( cyclwarr );
-
-

@@ -160,4 +160,3 @@ VIDEO_UPDATE( ninjakd2 )
 	tilemap_draw(bitmap, cliprect, fg_tilemap, 0, 0);
 
 }
-

@@ -1574,4 +1574,3 @@ GAME( 1986, outruna,  outrun,   outrun,   outrun,   outrun,   ROT0,         "Seg
 GAME( 1986, outrunb,  outrun,   outrun,   outrun,   outrunb,  ROT0,         "bootleg", "Out Run (set 3)" )
 GAME( 1989, toutrun,  0,        toutrun,  toutrun,  toutrun,  ROT0,         "Sega",    "Turbo Out Run (Out Run upgrade) (bootleg of FD1094 317-0118 set)" ) /* decrypted */
 GAME( 1989, toutrun3, toutrun,  toutrun,  toutrun,  toutrun,  ROT0,         "Sega",    "Turbo Out Run (cockpit) (bootleg of FD1094 317-0107 set)" ) /* decrypted */
-

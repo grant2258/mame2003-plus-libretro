@@ -650,4 +650,3 @@ ROM_END
 
 GAME( 1984, wilytowr, 0,        wilytowr, wilytowr, 0, ROT180, "Irem",                    "Wily Tower" )
 GAME( 1985, atomboy,  wilytowr, atomboy,  wilytowr, 0, ROT180, "Irem (Memetron license)", "Atomic Boy" )
-

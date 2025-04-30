@@ -302,4 +302,3 @@ READ_HANDLER( atarifb4_in2_r )
 
 	else return 0;
 }
-

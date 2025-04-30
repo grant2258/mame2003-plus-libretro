@@ -970,4 +970,3 @@ GAME( 1987, gemini,   0,        gemini,   gemini,   gemini,   ROT90, "Tecmo", "G
 GAME( 1988, silkworm, 0,        silkworm, silkworm, silkworm, ROT0,  "Tecmo", "Silk Worm (set 1)" )
 GAME( 1988, silkwrm2, silkworm, silkworm, silkworm, silkworm, ROT0,  "Tecmo", "Silk Worm (set 2)" )
 GAME( 1988, backfirt, 0,        gemini,   backfirt, gemini,   ROT0,  "Tecmo", "Back Fire (Tecmo)" )
-

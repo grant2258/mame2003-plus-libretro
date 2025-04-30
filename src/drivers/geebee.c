@@ -960,4 +960,3 @@ GAMEX( 1980, navalone, 0,        navalone, navalone, navalone,ROT90, "Namco",   
 GAME ( 1980, kaitei,   0,        kaitei,   kaitei,   kaitei,  ROT90, "K.K. Tokki",                 "Kaitei Takara Sagashi" )
 GAME ( 1980, kaitein,  0,	 kaitein,  kaitein,  kaitei,  ROT90, "Namco",                      "Kaitei Takara Sagashi (Namco)" )
 GAMEX( 1980, sos,      0,        sos,      sos,      sos,     ROT90, "Namco",                      "SOS", GAME_IMPERFECT_SOUND )
-

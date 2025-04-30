@@ -663,5 +663,3 @@ static DRIVER_INIT( drgnmst )
 
 GAME( 1994, drgnmst,  0, drgnmst,  drgnmst, drgnmst, ROT0, "Unico", "Dragon Master" )
 GAME( 1996, mastfury, 0, mastfury, drgnmst, 0,       ROT0, "Unico", "Master's Fury" ) 
-
-

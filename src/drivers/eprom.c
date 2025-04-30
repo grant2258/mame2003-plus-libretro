@@ -749,4 +749,3 @@ GAME( 1989, eprom2, eprom, eprom, eprom, eprom, ROT0, "Atari Games", "Escape fro
 GAME( 1989, klaxp1, klax,  klaxp, klaxp, klaxp, ROT0, "Atari Games", "Klax (prototype set 1)" )
 GAME( 1989, klaxp2, klax,  klaxp, klaxp, klaxp, ROT0, "Atari Games", "Klax (prototype set 2)" )
 GAME( 1989, guts,   0,     guts,  guts,  guts,  ROT0, "Atari Games", "Guts n' Glory (prototype)")
-

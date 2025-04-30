@@ -2632,5 +2632,3 @@ void svcsplus_px_hack( void )
 	mem16[0xa10e/2] = 0x000e;
 	mem16[0xa110/2] = 0x9750;
 }
-
-

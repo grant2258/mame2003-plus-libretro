@@ -1019,4 +1019,3 @@ VIDEO_EOF( megasys1 )
 	memcpy(megasys1_buffer_spriteram16, spriteram16, 0x2000);
 
 }
-

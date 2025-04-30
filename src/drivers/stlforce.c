@@ -314,4 +314,3 @@ ROM_END
 
 GAME(1994, stlforce, 0, stlforce,  stlforce, 0, ROT0, "Electronic Devices Italy / Ecogames S.L. Spain", "Steel Force" )
 GAME(1995, mortalr,  0, stlforce,  stlforce, 0, ROT0, "New Dream Games", "Mortal Race" ) /* based on the same rough codebase as Top Driving tch/topdrive.cpp but not the same game, so not a clone */
-
