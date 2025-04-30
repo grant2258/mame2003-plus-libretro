@@ -426,6 +426,10 @@ const struct cpu_interface cpuintrf[] =
 #if (HAS_N7751)
 	CPU0(N7751,    n7751,	 1,  0,1.00, 8, 16,	  0,16,LE,1, 2	),
 #endif
+#if (HAS_I8032)
+    /* MCS-51 family (I8032) */
+    CPU3(I8032,    i8032,   1, IRQ_LINE_NMI,1.00, 8,16,   0,16,LE,1, 3 ),
+#endif
 #if (HAS_I8X41)
 	CPU0(I8X41,    i8x41,	 1,  0,1.00, 8, 16,	  0,16,LE,1, 2	),
 #endif
