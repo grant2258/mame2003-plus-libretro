@@ -48,6 +48,50 @@ extern "C" {
 #define UNEXPECTED(exp)	(exp)
 #endif
 
+#if defined(MSB_FIRST)
+  #define BYTE_ORDER_0 1
+  #define BYTE_ORDER_1 0
+#else
+  #define BYTE_ORDER_0 0
+  #define BYTE_ORDER_1 1
+
+#endif
+
+#define READ_WORD_UNALIGNED(ptr)                             \
+({                                                           \
+    union { UINT8 b[2]; data16_t w; } u;                     \
+    u.b[0] = (ptr)[BYTE_ORDER_0];                            \
+    u.b[1] = (ptr)[BYTE_ORDER_1];                            \
+    u.w;                                                     \
+})
+
+#define WRITE_WORD_UNALIGNED(ptr, val)                       \
+do {                                                         \
+    union { UINT8 b[2]; data16_t w; } u;                     \
+    u.w = (val);                                             \
+    (ptr)[BYTE_ORDER_0] = u.b[0];                            \
+    (ptr)[BYTE_ORDER_1] = u.b[1];                            \
+} while (0)
+
+#define READ_LONG_UNALIGNED(ptr)                             \
+({                                                           \
+    union { UINT8 b[4]; data32_t l; } u;                     \
+    u.b[0] = (ptr)[BYTE_ORDER_0];                            \
+    u.b[1] = (ptr)[BYTE_ORDER_1];                            \
+    u.b[2] = (ptr)[BYTE_ORDER_0 + 2];                        \
+    u.b[3] = (ptr)[BYTE_ORDER_1 + 2];                        \
+    u.l;                                                     \
+})
+
+#define WRITE_LONG_UNALIGNED(ptr, val)                       \
+do {                                                         \
+    union { UINT8 b[4]; data32_t l; } u;                     \
+    u.l = (val);                                             \
+    (ptr)[BYTE_ORDER_0]     = u.b[0];                        \
+    (ptr)[BYTE_ORDER_1]     = u.b[1];                        \
+    (ptr)[BYTE_ORDER_0 + 2] = u.b[2];                        \
+    (ptr)[BYTE_ORDER_1 + 2] = u.b[3];                        \
+} while (0)
 
 
 /***************************************************************************
@@ -57,13 +101,13 @@ extern "C" {
 ***************************************************************************/
 
 #ifdef MAME_DEBUG
-#define CPUREADOP_SAFETY_NONE		0
+#define CPUREADOP_SAFETY_NONE			0
 #define CPUREADOP_SAFETY_PARTIAL	0
-#define CPUREADOP_SAFETY_FULL		1
+#define CPUREADOP_SAFETY_FULL			1
 #else
-#define CPUREADOP_SAFETY_NONE		1
+#define CPUREADOP_SAFETY_NONE			0
 #define CPUREADOP_SAFETY_PARTIAL	0
-#define CPUREADOP_SAFETY_FULL		0
+#define CPUREADOP_SAFETY_FULL			1
 #endif
 
 
@@ -870,7 +914,24 @@ extern struct ExtMemory	ext_memory[];		/* externally-allocated memory */
 ***************************************************************************/
 
 /* ----- 16/32-bit memory accessing ----- */
-#define COMBINE_DATA(varptr)		(*(varptr) = (*(varptr) & mem_mask) | (data & ~mem_mask))
+#define COMBINE_DATA(varptr)                                          \
+    do {                                                              \
+        UINT8 *__ptr8 = (UINT8 *)(varptr);                            \
+        if (sizeof(*(varptr)) == 2) {                                 \
+            data16_t __oldv = (data16_t)(__ptr8[0] | (__ptr8[1] << 8)); \
+            data16_t __newv = (__oldv & mem_mask) | (data & ~mem_mask); \
+            __ptr8[0] = (UINT8)(__newv & 0xff);                       \
+            __ptr8[1] = (UINT8)(__newv >> 8);                         \
+        } else if (sizeof(*(varptr)) == 4) {                          \
+            data32_t __oldv = (data32_t)(__ptr8[0] | (__ptr8[1] << 8) | \
+                                         (__ptr8[2] << 16) | (__ptr8[3] << 24)); \
+            data32_t __newv = (__oldv & mem_mask) | (data & ~mem_mask); \
+            __ptr8[0] = (UINT8)(__newv & 0xff);                       \
+            __ptr8[1] = (UINT8)((__newv >> 8) & 0xff);                \
+            __ptr8[2] = (UINT8)((__newv >> 16) & 0xff);               \
+            __ptr8[3] = (UINT8)(__newv >> 24);                        \
+        }                                                             \
+    } while (0)
 
 /* ----- 16-bit memory accessing ----- */
 #define ACCESSING_LSB16				((mem_mask & 0x00ff) == 0)
@@ -904,12 +965,12 @@ data16_t	cpu_readop_arg16_safe(offs_t offset);
 data32_t	cpu_readop_arg32_safe(offs_t offset);
 
 /* ----- unsafe opcode and opcode argument reading ----- */
-#define cpu_readop_unsafe(A)		(OP_ROM[(A) & mem_amask])
-#define cpu_readop16_unsafe(A)		(*(data16_t *)&OP_ROM[(A) & mem_amask])
-#define cpu_readop32_unsafe(A)		(*(data32_t *)&OP_ROM[(A) & mem_amask])
-#define cpu_readop_arg_unsafe(A)	(OP_RAM[(A) & mem_amask])
-#define cpu_readop_arg16_unsafe(A)	(*(data16_t *)&OP_RAM[(A) & mem_amask])
-#define cpu_readop_arg32_unsafe(A)	(*(data32_t *)&OP_RAM[(A) & mem_amask])
+#define cpu_readop_unsafe(A)				(OP_ROM[(A) & mem_amask])
+#define cpu_readop16_unsafe(A)			READ_WORD_UNALIGNED(&OP_ROM[(A) & mem_amask])
+#define cpu_readop32_unsafe(A)			READ_LONG_UNALIGNED(&OP_ROM[(A) & mem_amask])
+#define cpu_readop_arg_unsafe(A)		(OP_RAM[(A) & mem_amask])
+#define cpu_readop_arg16_unsafe(A)	READ_WORD_UNALIGNED(&OP_RAM[(A) & mem_amask])
+#define cpu_readop_arg32_unsafe(A)	READ_LONG_UNALIGNED(&OP_RAM[(A) & mem_amask])
 
 /* ----- opcode and opcode argument reading ----- */
 void activecpu_set_op_base(unsigned val);
