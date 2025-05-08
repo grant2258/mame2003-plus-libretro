@@ -147,7 +147,8 @@ WRITE16_HANDLER( lastduel_scroll_w )
 {
 	static data16_t scroll[4];
 
-	data = COMBINE_DATA(&scroll[offset]);
+	COMBINE_DATA(&scroll[offset]);
+	data = scroll[offset];
 	switch (offset)
 	{
 		case 0: tilemap_set_scrolly(fg_tilemap,0,data); break;

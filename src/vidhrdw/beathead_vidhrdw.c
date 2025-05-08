@@ -115,8 +115,9 @@ WRITE32_HANDLER( beathead_vram_copy_w )
 WRITE32_HANDLER( beathead_finescroll_w )
 {
 	data32_t oldword = finescroll;
-	data32_t newword = COMBINE_DATA(&finescroll);
-
+	data32_t newword;
+	COMBINE_DATA(&finescroll);
+	newword = finescroll;
 	/* if VBLANK is going off on a non-zero scanline, suspend time */
 	if ((oldword & 8) && !(newword & 8) && current_scanline != 0)
 	{
@@ -135,10 +136,12 @@ WRITE32_HANDLER( beathead_finescroll_w )
 
 WRITE32_HANDLER( beathead_palette_w )
 {
-	int newword = COMBINE_DATA(&paletteram32[offset]);
-	int r = ((newword >> 9) & 0x3e) | ((newword >> 15) & 0x01);
-	int g = ((newword >> 4) & 0x3e) | ((newword >> 15) & 0x01);
-	int b = ((newword << 1) & 0x3e) | ((newword >> 15) & 0x01);
+	int newword, r, g, b;
+	COMBINE_DATA(&paletteram32[offset]);
+	newword = paletteram32[offset];
+	r = ((newword >> 9) & 0x3e) | ((newword >> 15) & 0x01);
+	g = ((newword >> 4) & 0x3e) | ((newword >> 15) & 0x01);
+	b = ((newword << 1) & 0x3e) | ((newword >> 15) & 0x01);
 
 	r = (r << 2) | (r >> 4);
 	g = (g << 2) | (g >> 4);

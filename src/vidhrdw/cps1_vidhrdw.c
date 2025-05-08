@@ -571,8 +571,8 @@ WRITE16_HANDLER( cps1_output_w )
 		return;
 	}
 
-	data = COMBINE_DATA(&cps1_output[offset]);
-
+	COMBINE_DATA(&cps1_output[offset]);
+	data = cps1_output[offset];
 	/* To mark scanlines for raster effects */
 	if(offset == 0x52/2)
 	{
