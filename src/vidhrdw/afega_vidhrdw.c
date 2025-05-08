@@ -58,7 +58,8 @@ data16_t *afega_vram_1, *afega_scroll_1;
 WRITE16_HANDLER( afega_palette_w )
 {
 	int r,g,b;
-	data = COMBINE_DATA(&paletteram16[offset]);
+	COMBINE_DATA(&paletteram16[offset]);
+	data =  paletteram16[offset];
 	b = ((data & 0x00F0) >> 0) + ((data & 0x0002) << 2);
 	g = ((data & 0x0F00) >> 4) + ((data & 0x0004) << 1);
 	r = ((data & 0xF000) >> 8) + ((data & 0x0008) << 0);

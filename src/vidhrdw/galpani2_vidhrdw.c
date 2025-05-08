@@ -61,7 +61,9 @@ WRITE16_HANDLER( galpani2_bg8_regs_##_n_##_w ) \
 WRITE16_HANDLER( galpani2_bg8_##_n_##_w ) \
 { \
 	int x,y,pen; \
-	data16_t newword = COMBINE_DATA(&galpani2_bg8_##_n_[offset]); \
+	data16_t newword; \
+	COMBINE_DATA(&galpani2_bg8_##_n_[offset]); \
+	newword = galpani2_bg8_##_n_[offset]; \
 	pen	=	newword & 0xff; \
 	x	=	(offset % 512);	/* 512 x 256 */ \
 	y	=	(offset / 512); \
@@ -71,10 +73,13 @@ WRITE16_HANDLER( galpani2_bg8_##_n_##_w ) \
 #define galpani2_BG8_PALETTE_W( _n_ ) \
 WRITE16_HANDLER( galpani2_palette_##_n_##_w ) \
 { \
-	data16_t newword = COMBINE_DATA(&galpani2_palette_##_n_[offset]); \
-	int r = (newword >>  5) & 0x1f; \
-	int g = (newword >> 10) & 0x1f; \
-	int b = (newword >>  0) & 0x1f; \
+	int r, g, b; \
+	data16_t newword; \
+	COMBINE_DATA(&galpani2_palette_##_n_[offset]); \
+	newword = galpani2_palette_##_n_[offset]; \
+	r = (newword >>  5) & 0x1f; \
+	g = (newword >> 10) & 0x1f; \
+	b = (newword >>  0) & 0x1f; \
 	palette_set_color( offset + 0x4000 + _n_ * 0x100, (r << 3) | (r >> 2),(g << 3) | (g >> 2),(b << 3) | (b >> 2) ); \
 }
 
@@ -106,10 +111,12 @@ static struct mame_bitmap *galpani2_bg15_bitmap;
 /* 8 horizontal pages of 256x256 pixels? */
 WRITE16_HANDLER( galpani2_bg15_w )
 {
-	data16_t newword = COMBINE_DATA(&galpani2_bg15[offset]);
-
-	int x = (offset % 256) + (offset / (256*256)) * 256 ;
-	int y = (offset / 256) % 256;
+	int x, y;
+	data16_t newword;
+	COMBINE_DATA(&galpani2_bg15[offset]);
+	newword = galpani2_bg15[offset];
+	x = (offset % 256) + (offset / (256*256)) * 256 ;
+	y = (offset / 256) % 256;
 
 	plot_pixel( galpani2_bg15_bitmap, x, y, Machine->pens[0x4200 + (newword & 0x7fff)] );
 }

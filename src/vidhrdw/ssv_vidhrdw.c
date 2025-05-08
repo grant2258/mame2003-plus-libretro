@@ -222,7 +222,9 @@ static void get_tile_info_0(int tile_index)
 WRITE16_HANDLER( gdfs_tmapram_w )
 {
 	data16_t old_data	=	gdfs_tmapram[offset];
-	data16_t new_data	=	COMBINE_DATA(&gdfs_tmapram[offset]);
+	data16_t new_data;
+	COMBINE_DATA(&gdfs_tmapram[offset]);
+	new_data = gdfs_tmapram[offset];
 	if (old_data != new_data)	tilemap_mark_tile_dirty(gdfs_tmap, offset);
 }
 

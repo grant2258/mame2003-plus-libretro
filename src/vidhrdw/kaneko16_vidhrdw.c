@@ -114,7 +114,9 @@ static void get_tile_info_##_N_(int tile_index) \
 WRITE16_HANDLER( kaneko16_vram_##_N_##_w ) \
 { \
 	data16_t old_data	=	kaneko16_vram_##_N_[offset]; \
-	data16_t new_data	=	COMBINE_DATA(&kaneko16_vram_##_N_[offset]); \
+	data16_t new_data; \
+	COMBINE_DATA(&kaneko16_vram_##_N_[offset]); \
+	new_data = kaneko16_vram_##_N_[offset]; \
 	if (old_data != new_data)	tilemap_mark_tile_dirty(kaneko16_tmap_##_N_, offset/2); \
 }
 

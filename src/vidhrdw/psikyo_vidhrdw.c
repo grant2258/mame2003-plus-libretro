@@ -106,7 +106,9 @@ static void get_tile_info_1( int tile_index )
 WRITE32_HANDLER( psikyo_vram_0_w )
 {
 	data32_t newlong = psikyo_vram_0[offset];
-	data32_t oldlong = COMBINE_DATA(&psikyo_vram_0[offset]);
+	data32_t oldlong;
+	COMBINE_DATA(&psikyo_vram_0[offset]);
+	oldlong = psikyo_vram_0[offset];
 	if (oldlong == newlong)	return;
 	if (ACCESSING_MSW32)
 	{
@@ -128,7 +130,9 @@ WRITE32_HANDLER( psikyo_vram_0_w )
 WRITE32_HANDLER( psikyo_vram_1_w )
 {
 	data32_t newlong = psikyo_vram_1[offset];
-	data32_t oldlong = COMBINE_DATA(&psikyo_vram_1[offset]);
+	data32_t oldlong;
+	COMBINE_DATA(&psikyo_vram_1[offset]);
+	oldlong = psikyo_vram_1[offset];
 	if (oldlong == newlong)	return;
 	if (ACCESSING_MSW32)
 	{
