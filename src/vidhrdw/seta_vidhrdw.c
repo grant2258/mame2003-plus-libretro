@@ -357,9 +357,7 @@ static void get_tile_info_3( int tile_index ) { get_tile_info( tile_index, 1, se
 WRITE16_HANDLER( seta_vram_0_w )
 {
 	data16_t oldword = seta_vram_0[offset];
-	data16_t newword;
-	COMBINE_DATA(&seta_vram_0[offset]);
-	newword = seta_vram_0[offset];
+	data16_t newword = COMBINE_DATA(&seta_vram_0[offset]);
 	if (oldword != newword)
 	{
 		if (offset & 0x1000)
@@ -372,9 +370,7 @@ WRITE16_HANDLER( seta_vram_0_w )
 WRITE16_HANDLER( seta_vram_2_w )
 {
 	data16_t oldword = seta_vram_2[offset];
-	data16_t newword;
-	COMBINE_DATA(&seta_vram_2[offset]);
-	newword = seta_vram_2[offset];
+	data16_t newword = COMBINE_DATA(&seta_vram_2[offset]);
 	if (oldword != newword)
 	{
 		if (offset & 0x1000)

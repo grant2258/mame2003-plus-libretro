@@ -237,8 +237,8 @@ WRITE16_HANDLER( turbofrc_gfxbank_w )
 	static data16_t bank[2];
 	struct tilemap *tmap = (offset == 0) ? bg1_tilemap : bg2_tilemap;
 
-	COMBINE_DATA(&bank[offset]);
-	data = bank[offset];
+	data = COMBINE_DATA(&bank[offset]);
+
 	setbank(tmap,4*offset + 0,(data >>  0) & 0x0f);
 	setbank(tmap,4*offset + 1,(data >>  4) & 0x0f);
 	setbank(tmap,4*offset + 2,(data >>  8) & 0x0f);
@@ -250,8 +250,8 @@ WRITE16_HANDLER( aerofgt_gfxbank_w )
 	static data16_t bank[4];
 	struct tilemap *tmap = (offset < 2) ? bg1_tilemap : bg2_tilemap;
 
-	COMBINE_DATA(&bank[offset]);
-	data = bank[offset];
+	data = COMBINE_DATA(&bank[offset]);
+
 	setbank(tmap,2*offset + 0,(data >> 8) & 0xff);
 	setbank(tmap,2*offset + 1,(data >> 0) & 0xff);
 }

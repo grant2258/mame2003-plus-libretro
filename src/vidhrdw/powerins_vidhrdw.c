@@ -88,13 +88,11 @@ WRITE16_HANDLER( powerins_paletteram16_w )
 	/*	RRRR GGGG BBBB RGBx	*/
 	/*	4321 4321 4321 000x	*/
 
-	int r, g, b;
-	data16_t newword;
-	COMBINE_DATA(&paletteram16[offset]);
-	newword = paletteram16[offset];
-	r = ((newword >> 8) & 0xF0 ) | ((newword << 0) & 0x08);
-	g = ((newword >> 4) & 0xF0 ) | ((newword << 1) & 0x08);
-	b = ((newword >> 0) & 0xF0 ) | ((newword << 2) & 0x08);
+	data16_t newword = COMBINE_DATA(&paletteram16[offset]);
+
+	int r = ((newword >> 8) & 0xF0 ) | ((newword << 0) & 0x08);
+	int g = ((newword >> 4) & 0xF0 ) | ((newword << 1) & 0x08);
+	int b = ((newword >> 0) & 0xF0 ) | ((newword << 2) & 0x08);
 
 	palette_set_color( offset, r,g,b );
 }
@@ -141,9 +139,7 @@ static void get_tile_info_0( int tile_index )
 WRITE16_HANDLER( powerins_vram_0_w )
 {
 	data16_t oldword = powerins_vram_0[offset];
-	data16_t newword;
-	COMBINE_DATA(&powerins_vram_0[offset]);
-	newword = powerins_vram_0[offset];
+	data16_t newword = COMBINE_DATA(&powerins_vram_0[offset]);
 	if (oldword != newword)
 		tilemap_mark_tile_dirty(tilemap_0, offset);
 }
@@ -185,9 +181,7 @@ static void get_tile_info_1( int tile_index )
 WRITE16_HANDLER( powerins_vram_1_w )
 {
 	data16_t oldword = powerins_vram_1[offset];
-	data16_t newword;
-	COMBINE_DATA(&powerins_vram_1[offset]);
-	newword = powerins_vram_1[offset];
+	data16_t newword = COMBINE_DATA(&powerins_vram_1[offset]);
 	if (oldword != newword)
 		tilemap_mark_tile_dirty(tilemap_1, offset);
 }

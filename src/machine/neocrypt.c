@@ -1504,8 +1504,7 @@ READ16_HANDLER( kof2003_r)
 
 WRITE16_HANDLER( kof2003_w )
 {
-	COMBINE_DATA(&kof2003_tbl[offset]);
-	data =  kof2003_tbl[offset];
+	data = COMBINE_DATA(&kof2003_tbl[offset]);
 	if (offset == 0x1ff0/2 || offset == 0x1ff2/2) {
 		UINT8* cr = (UINT8 *)kof2003_tbl;
 		UINT32 address = (cr[0x1ff3]<<16)|(cr[0x1ff2]<<8)|cr[0x1ff1];
@@ -1523,8 +1522,7 @@ WRITE16_HANDLER( kof2003_w )
 
 WRITE16_HANDLER( kof2003p_w )
 {
-	COMBINE_DATA(&kof2003_tbl[offset]);
-	data = kof2003_tbl[offset];
+	data = COMBINE_DATA(&kof2003_tbl[offset]);
 	if (offset == 0x1ff0/2 || offset == 0x1ff2/2) {
 		UINT8* cr = (UINT8 *)kof2003_tbl;
 		UINT32 address = (cr[0x1ff3]<<16)|(cr[0x1ff2]<<8)|cr[0x1ff0];

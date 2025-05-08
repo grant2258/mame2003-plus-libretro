@@ -353,9 +353,7 @@ UINT32 megasys1_##_n_##_scan_16x16(UINT32 col,UINT32 row,UINT32 num_cols,UINT32 
 WRITE16_HANDLER( megasys1_scrollram_##_n_##_w ) \
 { \
 	data16_t old_data = megasys1_scrollram_##_n_[offset]; \
-	data16_t new_data; \  
-	COMBINE_DATA(&megasys1_scrollram_##_n_[offset]); \
-	new_data = megasys1_scrollram_##_n_[offset]; \
+	data16_t new_data = COMBINE_DATA(&megasys1_scrollram_##_n_[offset]); \
 	if (old_data != new_data) \
 	{ \
 		if ( (offset < 0x40000/2) && (megasys1_tmap[_n_]) ) \
@@ -448,9 +446,8 @@ MEGASYS1_SCROLL_FLAG_W(2)
 /* Used by MS1-A/Z, B */
 WRITE16_HANDLER( megasys1_vregs_A_w )
 {
-	data16_t new_data;
-	COMBINE_DATA(&megasys1_vregs[offset]);
-	new_data = megasys1_vregs[offset];
+	data16_t new_data = COMBINE_DATA(&megasys1_vregs[offset]);
+
 	switch (offset)
 	{
 		case 0x000/2   :	megasys1_active_layers = new_data;	break;
@@ -500,9 +497,8 @@ READ16_HANDLER( megasys1_vregs_C_r )
 
 WRITE16_HANDLER( megasys1_vregs_C_w )
 {
-	data16_t new_data;
-	COMBINE_DATA(&megasys1_vregs[offset]);
-	new_data = megasys1_vregs[offset];
+	data16_t new_data = COMBINE_DATA(&megasys1_vregs[offset]);
+
 	switch (offset)
 	{
 		case 0x2000/2+0 :	megasys1_scrollx[0] = new_data;	break;
@@ -542,9 +538,8 @@ WRITE16_HANDLER( megasys1_vregs_C_w )
 /* Used by MS1-D only */
 WRITE16_HANDLER( megasys1_vregs_D_w )
 {
-	data16_t new_data;
-	COMBINE_DATA(&megasys1_vregs[offset]);
-	new_data = megasys1_vregs[offset];
+	data16_t new_data = COMBINE_DATA(&megasys1_vregs[offset]);
+
 	switch (offset)
 	{
 		case 0x2000/2+0 :	megasys1_scrollx[0] = new_data;	break;

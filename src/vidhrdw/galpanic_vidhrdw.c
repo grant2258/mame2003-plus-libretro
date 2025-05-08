@@ -37,8 +37,8 @@ WRITE16_HANDLER( galpanic_bgvideoram_w )
 	int sx,sy;
 
 
-	COMBINE_DATA(&galpanic_bgvideoram[offset]);
-	data = galpanic_bgvideoram[offset];
+	data = COMBINE_DATA(&galpanic_bgvideoram[offset]);
+
 	sy = offset / 256;
 	sx = offset % 256;
 
@@ -49,8 +49,8 @@ WRITE16_HANDLER( galpanic_paletteram_w )
 {
 	int r,g,b;
 
-	COMBINE_DATA(&paletteram16[offset]);
-	data = paletteram16[offset];
+	data = COMBINE_DATA(&paletteram16[offset]);
+
 	r = (data >>  6) & 0x1f;
 	g = (data >> 11) & 0x1f;
 	b = (data >>  1) & 0x1f;
