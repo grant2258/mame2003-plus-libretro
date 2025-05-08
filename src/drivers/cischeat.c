@@ -210,12 +210,10 @@ static READ16_HANDLER( rom_3_r ) {return rom_3[offset];}
 
 WRITE16_HANDLER( bigrun_paletteram16_w )
 {
-	data16_t word, r, g, b;
-	COMBINE_DATA(&paletteram16[offset]);
-	word = paletteram16[offset];
-	r = ((word >> 8) & 0xF0 ) | ((word << 0) & 0x08);
-	g = ((word >> 4) & 0xF0 ) | ((word << 1) & 0x08);
-	b = ((word >> 0) & 0xF0 ) | ((word << 2) & 0x08);
+	data16_t word = COMBINE_DATA(&paletteram16[offset]);
+	int r = ((word >> 8) & 0xF0 ) | ((word << 0) & 0x08);
+	int g = ((word >> 4) & 0xF0 ) | ((word << 1) & 0x08);
+	int b = ((word >> 0) & 0xF0 ) | ((word << 2) & 0x08);
 
 	/* Scroll 0*/
 	if ( (offset >= 0x0e00/2) && (offset <= 0x0fff/2) ) { palette_set_color(0x000 + offset - 0x0e00/2, r,g,b ); return;}
@@ -284,12 +282,10 @@ MEMORY_END
 
 WRITE16_HANDLER( cischeat_paletteram16_w )
 {
-	data16_t word, r, g, b;
-	COMBINE_DATA(&paletteram16[offset]);
-	word = paletteram16[offset];
-	r = ((word >> 8) & 0xF0 ) | ((word << 0) & 0x08);
-	g = ((word >> 4) & 0xF0 ) | ((word << 1) & 0x08);
-	b = ((word >> 0) & 0xF0 ) | ((word << 2) & 0x08);
+	data16_t word = COMBINE_DATA(&paletteram16[offset]);
+	int r = ((word >> 8) & 0xF0 ) | ((word << 0) & 0x08);
+	int g = ((word >> 4) & 0xF0 ) | ((word << 1) & 0x08);
+	int b = ((word >> 0) & 0xF0 ) | ((word << 2) & 0x08);
 
 	/* Scroll 0*/
 	if ( (offset >= 0x1c00/2) && (offset <= 0x1fff/2) ) { palette_set_color(0x000 + offset - 0x1c00/2, r,g,b ); return;}
@@ -354,12 +350,10 @@ MEMORY_END
 
 WRITE16_HANDLER( f1gpstar_paletteram16_w )
 {
-	data16_t word, r, g, b;
-	COMBINE_DATA(&paletteram16[offset]);
-	word = paletteram16[offset];
-	r = ((word >> 8) & 0xF0 ) | ((word << 0) & 0x08);
-	g = ((word >> 4) & 0xF0 ) | ((word << 1) & 0x08);
-	b = ((word >> 0) & 0xF0 ) | ((word << 2) & 0x08);
+	data16_t word = COMBINE_DATA(&paletteram16[offset]);
+	int r = ((word >> 8) & 0xF0 ) | ((word << 0) & 0x08);
+	int g = ((word >> 4) & 0xF0 ) | ((word << 1) & 0x08);
+	int b = ((word >> 0) & 0xF0 ) | ((word << 2) & 0x08);
 
 	/* Scroll 0*/
 	if ( (offset >= 0x1e00/2) && (offset <= 0x1fff/2) ) { palette_set_color(0x000 + offset - 0x1e00/2, r,g,b ); return;}
@@ -468,12 +462,11 @@ MEMORY_END
 
 WRITE16_HANDLER( scudhamm_paletteram16_w )
 {
-	int newword, r, g, b;
-	COMBINE_DATA(&paletteram16[offset]);
-	newword = paletteram16[offset];
-	r = ((newword >> 8) & 0xF0 ) | ((newword << 0) & 0x08);
-	g = ((newword >> 4) & 0xF0 ) | ((newword << 1) & 0x08);
-	b = ((newword >> 0) & 0xF0 ) | ((newword << 2) & 0x08);
+	int newword = COMBINE_DATA(&paletteram16[offset]);
+
+	int r = ((newword >> 8) & 0xF0 ) | ((newword << 0) & 0x08);
+	int g = ((newword >> 4) & 0xF0 ) | ((newword << 1) & 0x08);
+	int b = ((newword >> 0) & 0xF0 ) | ((newword << 2) & 0x08);
 
 	/* Scroll 0*/
 	if ( (offset >= 0x1e00/2) && (offset <= 0x1fff/2) ) { palette_set_color(0x000 + offset - 0x1e00/2, r,g,b ); return;}

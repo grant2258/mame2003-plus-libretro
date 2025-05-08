@@ -256,9 +256,8 @@ READ16_HANDLER( bigrun_vregs_r )
 WRITE16_HANDLER( bigrun_vregs_w )
 {
 	data16_t old_data = megasys1_vregs[offset];
-	data16_t new_data;
-	COMBINE_DATA(&megasys1_vregs[offset]);
-	new_data = megasys1_vregs[offset];
+	data16_t new_data = COMBINE_DATA(&megasys1_vregs[offset]);
+
 	switch (offset)
 	{
  		case 0x0000/2   :	/* leds*/
@@ -351,9 +350,8 @@ READ16_HANDLER( cischeat_vregs_r )
 WRITE16_HANDLER( cischeat_vregs_w )
 {
 	data16_t old_data = megasys1_vregs[offset];
-	data16_t new_data;
-	COMBINE_DATA(&megasys1_vregs[offset]);
-	new_data =  megasys1_vregs[offset];
+	data16_t new_data = COMBINE_DATA(&megasys1_vregs[offset]);
+
 	switch (offset)
 	{
  		case 0x0000/2   :	/* leds*/
@@ -463,9 +461,8 @@ READ16_HANDLER( f1gpstr2_vregs_r )
 WRITE16_HANDLER( f1gpstar_vregs_w )
 {
 /*	data16_t old_data = megasys1_vregs[offset];*/
-	data16_t new_data;
-	COMBINE_DATA(&megasys1_vregs[offset]);
-	new_data = megasys1_vregs[offset];
+	data16_t new_data = COMBINE_DATA(&megasys1_vregs[offset]);
+
 	switch (offset)
 	{
 /*
@@ -521,9 +518,8 @@ CPU #0 PC 00235C : Warning, vreg 0006 <- 0000
 WRITE16_HANDLER( f1gpstr2_vregs_w )
 {
 /*	data16_t old_data = megasys1_vregs[offset];*/
-	data16_t new_data;
-	COMBINE_DATA(&megasys1_vregs[offset]);
-	new_data = megasys1_vregs[offset];
+	data16_t new_data = COMBINE_DATA(&megasys1_vregs[offset]);
+
 	if ((offset >= 0x1000/2) && (offset < 0x2000/2))
 		return;
 
@@ -549,9 +545,8 @@ WRITE16_HANDLER( f1gpstr2_vregs_w )
 WRITE16_HANDLER( scudhamm_vregs_w )
 {
 /*	int old_data = megasys1_vregs[offset];*/
-	int new_data;
-	COMBINE_DATA(&megasys1_vregs[offset]);
-	new_data = megasys1_vregs[offset];
+	int new_data = COMBINE_DATA(&megasys1_vregs[offset]);
+
 	switch (offset)
 	{
 		case 0x000/2+0 : MEGASYS1_VREG_SCROLL(0,x)		break;

@@ -433,9 +433,8 @@ void wecleman_get_txt_tile_info( int tile_index )
 WRITE16_HANDLER( wecleman_txtram_w )
 {
 	data16_t old_data = wecleman_txtram[offset];
-	data16_t new_data;
-	COMBINE_DATA(&wecleman_txtram[offset]);
-	new_data = wecleman_txtram[offset];
+	data16_t new_data = COMBINE_DATA(&wecleman_txtram[offset]);
+
 	if ( old_data != new_data )
 	{
 		if (offset >= 0xE00/2 )	/* Video registers */
@@ -500,9 +499,8 @@ void wecleman_get_fg_tile_info( int tile_index )
 WRITE16_HANDLER( wecleman_pageram_w )
 {
 	data16_t old_data = wecleman_pageram[offset];
-	data16_t new_data;
-	COMBINE_DATA(&wecleman_pageram[offset]);
-	new_data = wecleman_pageram[offset];
+	data16_t new_data = COMBINE_DATA(&wecleman_pageram[offset]);
+
 	if ( old_data != new_data )
 	{
 		int page,col,row;
@@ -855,8 +853,8 @@ WRITE16_HANDLER( hotchase_paletteram16_SBGRBBBBGGGGRRRR_word_w )
 {
 	int newword, r, g, b;
 
-	COMBINE_DATA(&paletteram16[offset]);
-	newword = paletteram16[offset];
+	newword = COMBINE_DATA(&paletteram16[offset]);
+
 	r = ((newword << 1) & 0x1E ) | ((newword >> 12) & 0x01);
 	g = ((newword >> 3) & 0x1E ) | ((newword >> 13) & 0x01);
 	b = ((newword >> 7) & 0x1E ) | ((newword >> 14) & 0x01);
@@ -868,9 +866,8 @@ WRITE16_HANDLER( hotchase_paletteram16_SBGRBBBBGGGGRRRR_word_w )
 
 WRITE16_HANDLER( wecleman_paletteram16_SSSSBBBBGGGGRRRR_word_w )
 {
-	int newword;
-	 COMBINE_DATA(&paletteram16[offset]);
-	newword = paletteram16[offset];
+	int newword = COMBINE_DATA(&paletteram16[offset]);
+
 	/* the highest nibble has some unknown functions*/
 /*  if (newword & 0xf000) logerror("MSN set on color %03x: %1x\n", offset, newword>>12);*/
 	palette_set_color(offset, pal4bit(newword >> 0), pal4bit(newword >> 4), pal4bit(newword >> 8));

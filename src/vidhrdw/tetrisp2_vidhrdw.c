@@ -64,8 +64,7 @@ data16_t *tetrisp2_priority;
 /* BBBBBGGGGGRRRRRx xxxxxxxxxxxxxxxx */
 WRITE16_HANDLER( tetrisp2_palette_w )
 {
-	COMBINE_DATA(&paletteram16[offset]);
-	data = paletteram16[offset];
+	data = COMBINE_DATA(&paletteram16[offset]);
 	if ((offset & 1) == 0)
 	{
 		int r = (data >>  1) & 0x1f;
@@ -142,9 +141,7 @@ static void get_tile_info_bg(int tile_index)
 WRITE16_HANDLER( tetrisp2_vram_bg_w )
 {
 	data16_t old_data	=	tetrisp2_vram_bg[offset];
-	data16_t new_data;
-	COMBINE_DATA(&tetrisp2_vram_bg[offset]);
-	new_data = tetrisp2_vram_bg[offset];
+	data16_t new_data	=	COMBINE_DATA(&tetrisp2_vram_bg[offset]);
 	if (old_data != new_data)	tilemap_mark_tile_dirty(tilemap_bg,offset/2);
 }
 
@@ -167,9 +164,7 @@ static void get_tile_info_fg(int tile_index)
 WRITE16_HANDLER( tetrisp2_vram_fg_w )
 {
 	data16_t old_data	=	tetrisp2_vram_fg[offset];
-	data16_t new_data;
-	COMBINE_DATA(&tetrisp2_vram_fg[offset]);
-	new_data = tetrisp2_vram_fg[offset];
+	data16_t new_data	=	COMBINE_DATA(&tetrisp2_vram_fg[offset]);
 	if (old_data != new_data)	tilemap_mark_tile_dirty(tilemap_fg,offset/2);
 }
 
@@ -188,9 +183,7 @@ static void get_tile_info_rot(int tile_index)
 WRITE16_HANDLER( tetrisp2_vram_rot_w )
 {
 	data16_t old_data	=	tetrisp2_vram_rot[offset];
-	data16_t new_data;
-	COMBINE_DATA(&tetrisp2_vram_rot[offset]);
-	new_data = tetrisp2_vram_rot[offset];
+	data16_t new_data	=	COMBINE_DATA(&tetrisp2_vram_rot[offset]);
 	if (old_data != new_data)	tilemap_mark_tile_dirty(tilemap_rot,offset/2);
 }
 
