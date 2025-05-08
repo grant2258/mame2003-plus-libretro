@@ -914,26 +914,8 @@ extern struct ExtMemory	ext_memory[];		/* externally-allocated memory */
 ***************************************************************************/
 
 /* ----- 16/32-bit memory accessing ----- */
-#define COMBINE_DATA(varptr)                                          \
-    do {                                                              \
-        UINT8 *__ptr8 = (UINT8 *)(varptr);                            \
-        if (sizeof(*(varptr)) == 2) {                                 \
-            data16_t __oldv = (data16_t)(__ptr8[0] | (__ptr8[1] << 8)); \
-            data16_t __newv = (__oldv & mem_mask) | (data & ~mem_mask); \
-            __ptr8[0] = (UINT8)(__newv & 0xff);                       \
-            __ptr8[1] = (UINT8)(__newv >> 8);                         \
-        } else if (sizeof(*(varptr)) == 4) {                          \
-            data32_t __oldv = (data32_t)(__ptr8[0] | (__ptr8[1] << 8) | \
-                                         (__ptr8[2] << 16) | (__ptr8[3] << 24)); \
-            data32_t __newv = (__oldv & mem_mask) | (data & ~mem_mask); \
-            __ptr8[0] = (UINT8)(__newv & 0xff);                       \
-            __ptr8[1] = (UINT8)((__newv >> 8) & 0xff);                \
-            __ptr8[2] = (UINT8)((__newv >> 16) & 0xff);               \
-            __ptr8[3] = (UINT8)(__newv >> 24);                        \
-        }                                                             \
-    } while (0)
+#define COMBINE_DATA(varptr)		(*(varptr) = (*(varptr) & mem_mask) | (data & ~mem_mask)) 
 
-/* ----- 16-bit memory accessing ----- */
 #define ACCESSING_LSB16				((mem_mask & 0x00ff) == 0)
 #define ACCESSING_MSB16				((mem_mask & 0xff00) == 0)
 #define ACCESSING_LSB				ACCESSING_LSB16
